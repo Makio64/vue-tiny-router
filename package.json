@@ -1,5 +1,5 @@
 {
-  "name": "tiny-router",
+  "name": "vue-tiny-router",
   "version": "1.0.0",
   "description": "Hi! I'm a minimalist & lightweight vue3 router",
   "main": "src/index.js",
@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Makio64/tiny-router.git"
+    "url": "git+https://github.com/Makio64/vue-tiny-router.git"
   },
   "keywords": [
     "vue",
@@ -20,9 +20,9 @@
   "author": "Makio64 | David Ronai <davronai@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Makio64/tiny-router/issues"
+    "url": "https://github.com/Makio64/vue-tiny-router/issues"
   },
-  "homepage": "https://github.com/Makio64/tiny-router#readme",
+  "homepage": "https://github.com/Makio64/vue-tiny-router#readme",
   "peerDependencies": {
     "vue": "^3.0.0"
   }
