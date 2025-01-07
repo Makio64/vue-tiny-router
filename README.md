@@ -10,6 +10,8 @@ Use your favorite packages system
 - `yarn install vue-tiny-router`
 
 ### Use me! 🚀
+
+Install me in your app, usually in `main.js`
 ``` js
 import App from '@/App.vue'
 import { TinyRouterInstall } from 'vue-tiny-router'
@@ -19,6 +21,7 @@ app.use( TinyRouterInstall )
 app.mount( '#app' )
 ```
 
+Use me where you want, for example in the root of your App!
 ``` vue
 <template>
 	<div class="view">
@@ -54,6 +57,10 @@ export default {
 }
 </script>
 ```
+
+Voila you have 2 pages ready! 
+
+Note : `defineAsyncComponent` is recommended for async loading of each page to reduce the main loading, but you can simply use the component instead! You're the boss!👑
 
 ## FAQ 💬
 
