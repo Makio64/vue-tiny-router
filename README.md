@@ -3,12 +3,12 @@ Hi! I'm a minimalist but powerfull vue3 router
 
 # Getting Started
 
-## Install
+## Install me!
 - `pnpm i vue-tiny-router`
 - `npm i vue-tiny-router`
 - `yarn install vue-tiny-router`
 - 
-## use
+## Use me!
 ``` js
 import App from '@/App.vue'
 import { TinyRouterInstall } from 'vue-tiny-router'
