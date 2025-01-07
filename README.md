@@ -1,14 +1,14 @@
-# Vue-Tiny-Router
-Hi! I'm a minimalist but powerfull vue3 router
+# vue-tiny-router 🌱
+Hi! I'm a minimalist but powerfull vue3 router! Nice to meet you!
 
-# Getting Started
+## Getting Started
 
-## Install me!
+### Install me!
 - `pnpm i vue-tiny-router`
 - `npm i vue-tiny-router`
 - `yarn install vue-tiny-router`
-- 
-## Use me!
+
+### Use me!
 ``` js
 import App from '@/App.vue'
 import { TinyRouterInstall } from 'vue-tiny-router'
@@ -54,14 +54,14 @@ export default {
 </script>
 ```
 
-# FAQ
+## FAQ
 
-## What's your size ?
+### What's your size ?
 I'm the smallest !
 - 2.58kb without compression
 - 0.98kb with brotly!
 
-## What can you do ?
+### What can you do ?
 As a router I'll got you coverd!
 - basic routing `$router.push('/login')` 
 - parameters support `$router.push('/user/:id')`
@@ -70,8 +70,8 @@ As a router I'll got you coverd!
 - history & memory support 
 - back / forward / go(n)
 
-## Why do you exist?
+### Why do you exist?
 I'm design as an alternative to vue-router with simplicity and lightness as priority.
 
-## I need new functionality
+### I need new functionality
 Open an issue or a pull-request and let's discuss it! For pull-request keep everything as minimal and simple as possible, I wanna keep in shape!
