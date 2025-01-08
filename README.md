@@ -82,10 +82,7 @@ You can navigate like this:
 
 #### Navigate to a Page
 
-Use `this.$router.push( path )` to go to the path.
-
-For example `this.$router.push( '/home' )` to go to the `/home` page.
-
+Use `this.$router.push( path )` to go to the page define by path.
 #### Route Guard
 
 Add a `beforeRouteLeave` guard in your page component to handle actions before leaving a route:
