@@ -100,15 +100,13 @@ beforeRouteLeave(next, to) {
 #### Parameters
 Use `this.$router.params` to get the current parameters object
 
-#### History Mode Only
+#### History Mode API
 
-- Go back: `history.back()`
-- Go forward: `history.forward()`
-- Go to a specific step: `history.go(n)`
+To keep me super small these features directly relate on history API : `history.back()`, `history.forward()`,  `history.go(n)`
 
 ### Async Loading ⚡
 
-Use `defineAsyncComponent` from Vue for lazy loading. This helps reduce the initial load time! 👑
+Use `defineAsyncComponent` from Vue for lazy loading. This helps reduce the initial load time! It's the way I recommend but you're the boss! 👑
 
 ```js
 routes: [
@@ -126,35 +124,18 @@ I'm the smallest! 🤏
 - **0.98kb** with Brotli compression
 - **2.58kb** without compression
 
-### What Can You Do?
+### What Can I Do? 💪
+I focus on easily switch pages in your app. 
 
-As a router, I can:
+I support basic and dynamic routes, handle redirects, manage browsing history, and lazy loading.
 
-- Basic routing: `$router.push('/home')`
-- Support route parameters: `$router.push('/user/:id')`
-- Redirects
-- History and memory modes
-- Default route
-- Route leave guard
-- Navigate back, forward, or to a specific step
-
-### Why Do You Exist?
-
-### What can you do ?
-As a router I'll got you covered! 💪
-- basic routing `$router.push('/login')` 
-- parameters support `$router.push('/user/:id')`
-- leaveGuard 
-- redirection support 
-- history & memory support 
-- back / forward / go(n)
+Finaly make smooth transition using my `leaveGuard` before leaving a page.
 
 ### Why do you exist?
-I'm design as an alternative to vue-router with simplicity and lightness as priority. ⚡
+My big brother `vue-router` was too heavy for my needs (~30kb vs ~1kb) so I'm design as an alternative with lightness as priority. ⚡ 
 
 ### I Need New Features?
-
-Feel free to open an issue or a pull request and let's discuss it.
+Feel free to open an issue or a pull request and let's discuss it. 💬
 
 When submitting a pull request, keep everything minimal and simple as much as possible. I wanna keep in shape! 🕺
 
