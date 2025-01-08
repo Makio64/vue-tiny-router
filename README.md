@@ -21,7 +21,7 @@ app.use( TinyRouterInstall )
 app.mount( '#app' )
 ```
 
-Use me where you want, for example in the root of your App!
+Use me where you want, usually in `App.vue`
 ``` vue
 <template>
   <TinyRouter :routes="routes" :redirects="redirects" />
