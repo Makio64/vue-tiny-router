@@ -15,8 +15,8 @@ Hello! I'm **vue-tiny-router**, a tiny (0.98kb) router for Vue3. Nice to meet yo
 - [FAQ 💬](#faq-💬)
   - [What's Your Size?](#whats-your-size-)
   - [What Can You Do?](#what-can-you-do-)
-  - [Why Do You Exist?](#why-do-you-exist-)
-  - [I Need New Features?](#i-need-new-features)
+  - [Why a new Router?](#why-do-you-exist-)
+  - [I Need More Features?](#i-need-new-features)
 
 ## Getting Started
 
@@ -121,17 +121,17 @@ I'm the smallest! 🤏
 - **0.98kb** with Brotli compression
 - **2.58kb** without compression
 
-### What Can I Do? 💪
+### What Can You Do? 💪
 I focus on easily switch pages in your app. 
 
 I support basic and dynamic routes, handle redirects, manage browsing history, and lazy loading.
 
 Finaly make smooth transition using my `leaveGuard` before leaving a page.
 
-### Why do you exist?
+### Why a new Router?
 My big brother `vue-router` was too heavy for my needs (~30kb vs ~1kb) so I'm design as an alternative with lightness as priority. ⚡ 
 
-### I Need New Features?
+### I Need More Features?
 Feel free to open an issue or a pull request and let's discuss it. 💬
 
 For pull request, keep everything minimalist as much as possible. I wanna keep in shape! 🕺
