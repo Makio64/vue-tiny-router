@@ -136,4 +136,8 @@ Feel free to open an issue or a pull request and let's discuss it. 💬
 
 When submitting a pull request, keep everything minimal and simple as much as possible. I wanna keep in shape! 🕺
 
-#vuejs #vue3 #router #javascript #webdev
+## Thanks for reading ! 💖
+
+I'm looking forward to work together and make cool stuffs!
+
+Best, vue-tiny-router
