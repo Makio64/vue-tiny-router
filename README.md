@@ -1,5 +1,5 @@
 # vue-tiny-router 🌱
-Hi! I'm a minimalist but powerful vue3 router! Nice to meet you!👋
+Hi! I'm a minimalist (0.98kb) but powerful vue3 router! Nice to meet you!👋
 
 ## Getting Started
 
@@ -24,43 +24,54 @@ app.mount( '#app' )
 Use me where you want, for example in the root of your App!
 ``` vue
 <template>
-	<div class="view">
-		<TinyRouter :routes="routes" :redirects="redirects" />
-	</div>
+  <TinyRouter :routes="routes" :redirects="redirects" />
 </template>
 
 <script>
 import { TinyRouter } from 'vue-tiny-router'
+// import your pages
 
 export default {
-	name: 'App',
-	computed: {
-		routes() {
-			return [
-				{
-					path: '/',
-					component: defineAsyncComponent( () => import( '@/views/HomeView' ) ),
-				},
-				{
-					path: '/hire/:freelanceId',
-					component: defineAsyncComponent( () => import( '@/views/FreelanceView' ) ),
-				},
-			]
-		},
-		redirects() {
-			return {
-				'/home': '/'
-			}
-		},
-	},
-	components: { TinyRouter }
+  data: ()=>({
+    routes:[
+      { path: '/', component: HomeView},
+      { path: '/hire/:freelanceId', component: FreelanceView  },
+    ],
+    redirects: {'/home': '/'}
+  })
+  components: { TinyRouter }
 }
 </script>
 ```
 
-Voila you have 2 pages ready! 
+And now in any of your component you can navigate 🌐
+```vue
+  <div class="button" @click="$router.push('/home')">Home</div>
+  <div class="button" @click="$router.push('/hire/makio64')">Hire me</div>
+```
 
-Note : `defineAsyncComponent` is recommended for async loading of each page to reduce the main loading, but you can simply use the component instead! You're the boss!👑
+### My API! 🔥
+
+#### Navigate to a page
+`this.$router.push('/home')`
+
+#### Route Guard
+You can add a leaveGuard to your page component, for example to make a transitionOut : `beforeRouteLeave(next, to){ /*do whatever animation or process you want and then call*/ next() }`
+
+#### history mode only
+- back: `history.back()`
+- forward: `history.forward()`
+- go(n): `history.go(n)`
+
+### Async loading ⚡
+Use `defineAsyncComponent` from vue to do async loading, a good practice to reduce the main loading! 👑
+
+``` vue
+  routes:[
+    { path: '/', component: defineAsyncComponent( () => import( '@/views/HomeView' ) )},
+    { path: '/hire/:freelanceId', component: defineAsyncComponent( () => import( '@/views/FreelanceView' ) )}  },
+  ]
+```
 
 ## FAQ 💬
 
@@ -82,4 +93,7 @@ As a router I'll got you covered! 💪
 I'm design as an alternative to vue-router with simplicity and lightness as priority. ⚡
 
 ### I need new functionality
-Open an issue or a pull-request and let's discuss it! For pull-request keep everything as minimal and simple as possible, I wanna keep in shape! 🕺
+
+Open an issue or a pull-request and let's discuss it! 
+
+For pull-request keep everything as minimal and simple as possible, I wanna keep in shape! 🕺
