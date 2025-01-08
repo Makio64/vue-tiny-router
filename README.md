@@ -2,6 +2,22 @@
 
 Hello! I'm **vue-tiny-router**, a tiny (0.98kb) router for Vue3. Nice to meet you! 👋
 
+## Summary
+
+- [Getting Started](#getting-started)
+  - [Install Me! 📦](#install-me-📦)
+  - [Use Me! 🚀](#use-me-🚀)
+- [My API! 🔥](#my-api-🔥)
+  - [Navigate to a Page](#navigate-to-a-page)
+  - [Route Guard](#route-guard)
+  - [History Mode API](#history-mode-only)
+- [Async Loading ⚡](#async-loading-⚡)
+- [FAQ 💬](#faq-💬)
+  - [What's Your Size?](#whats-your-size-)
+  - [What Can You Do?](#what-can-you-do-)
+  - [Why Do You Exist?](#why-do-you-exist-)
+  - [I Need New Features?](#i-need-new-features)
+
 ## Getting Started
 
 ### Install Me! 📦
