@@ -134,7 +134,7 @@ My big brother `vue-router` was too heavy for my needs (~30kb vs ~1kb) so I'm de
 ### I Need New Features?
 Feel free to open an issue or a pull request and let's discuss it. 💬
 
-When submitting a pull request, keep everything minimal and simple as much as possible. I wanna keep in shape! 🕺
+For pull request, keep everything minimalist as much as possible. I wanna keep in shape! 🕺
 
 ## Thanks for reading ! 💖
 
