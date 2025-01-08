@@ -1,99 +1,129 @@
 # vue-tiny-router 🌱
-Hi! I'm a minimalist (0.98kb) but powerful vue3 router! Nice to meet you!👋
+
+Hello! I'm **vue-tiny-router**, a tiny (0.98kb) but powerful router for Vue 3. Nice to meet you! 👋
 
 ## Getting Started
 
-### Install me! 📦
-Use your favorite packages system 
+### Install Me! 📦
+
+Choose your favorite package manager:
+
 - `pnpm i vue-tiny-router`
-- `npm i vue-tiny-router`
-- `yarn install vue-tiny-router`
+- `npm install vue-tiny-router`
+- `yarn add vue-tiny-router`
 
-### Use me! 🚀
+### Use Me! 🚀
 
-Install me in your app, usually in `main.js`
-``` js
+**1. Add Me to Your App**
+
+Usually in `main.js`:
+
+@@@
 import App from '@/App.vue'
 import { TinyRouterInstall } from 'vue-tiny-router'
 
-const app = createApp( App )
-app.use( TinyRouterInstall )
-app.mount( '#app' )
-```
+const app = createApp(App)
+app.use(TinyRouterInstall)
+app.mount('#app')
+@@@
 
-Use me where you want, usually in `App.vue`
-``` vue
+**2. Use Me in Your Component**
+
+Usually in `App.vue`:
+
+@@@
 <template>
   <TinyRouter :routes="routes" :redirects="redirects" />
 </template>
 
 <script>
 import { TinyRouter } from 'vue-tiny-router'
-// import your pages
+// Import your page components
 
 export default {
-  data: ()=>({
-    routes:[
-      { path: '/', component: HomeView},
-      { path: '/hire/:freelanceId', component: FreelanceView  },
+  data: () => ({
+    routes: [
+      { path: '/', component: HomeView },
+      { path: '/hire/:freelanceId', component: FreelanceView },
     ],
-    redirects: {'/home': '/'}
-  })
+    redirects: { '/home': '/' }
+  }),
   components: { TinyRouter }
 }
 </script>
-```
+@@@
 
-And now in any of your component you can navigate 🌐
-```vue
-  <div class="button" @click="$router.push('/home')">Home</div>
-  <div class="button" @click="$router.push('/hire/makio64')">Hire me</div>
-```
+**3. Navigate in Your Components**
+
+You can navigate like this:
+
+@@@
+<div class="button" @click="$router.push('/home')">Home</div>
+<div class="button" @click="$router.push('/hire/makio64')">Hire me</div>
+@@@
 
 ### My API! 🔥
 
-#### Navigate to a page
-`this.$router.push('/home')`
+#### Navigate to a Page
+
+Use `this.$router.push('/home')` to go to the Home page.
 
 #### Route Guard
-You can add a leaveGuard to your page component, for example to make a transitionOut : `beforeRouteLeave(next, to){ /*do whatever animation or process you want and then call*/ next() }`
 
-#### history mode only
-- back: `history.back()`
-- forward: `history.forward()`
-- go(n): `history.go(n)`
+Add a `beforeRouteLeave` guard in your page component to handle actions before leaving a route:
 
-### Async loading ⚡
-Use `defineAsyncComponent` from vue to do async loading, a good practice to reduce the main loading! 👑
+@@@
+beforeRouteLeave(next, to) {
+  // Do something, like an animation
+  next()
+}
+@@@
 
-``` vue
-  routes:[
-    { path: '/', component: defineAsyncComponent( () => import( '@/views/HomeView' ) )},
-    { path: '/hire/:freelanceId', component: defineAsyncComponent( () => import( '@/views/FreelanceView' ) )}  },
-  ]
-```
+#### History Mode Only
+
+- Go back: `history.back()`
+- Go forward: `history.forward()`
+- Go to a specific step: `history.go(n)`
+
+### Async Loading ⚡
+
+Use `defineAsyncComponent` from Vue for lazy loading. This helps reduce the initial load time! 👑
+
+@@@
+routes: [
+  { path: '/', component: defineAsyncComponent(() => import('@/views/HomeView')) },
+  { path: '/hire/:freelanceId', component: defineAsyncComponent(() => import('@/views/FreelanceView')) },
+]
+@@@
 
 ## FAQ 💬
 
-### What's your size ?
-I'm the smallest ! 🤏
-- 2.58kb without compression
-- 0.98kb with brotly!
+### What's Your Size?
 
-### What can you do ?
-As a router I'll got you covered! 💪
-- basic routing `$router.push('/login')` 
-- parameters support `$router.push('/user/:id')`
-- leaveGuard 
-- redirection support 
-- history & memory support 
-- back / forward / go(n)
+I'm super small! 🤏
 
-### Why do you exist?
-I'm design as an alternative to vue-router with simplicity and lightness as priority. ⚡
+- **2.58kb** without compression
+- **0.98kb** with Brotli compression
 
-### I need new functionality
+### What Can You Do?
 
-Open an issue or a pull-request and let's discuss it! 
+As a router, I can:
 
-For pull-request keep everything as minimal and simple as possible, I wanna keep in shape! 🕺
+- Basic routing: `$router.push('/login')`
+- Support route parameters: `$router.push('/user/:id')`
+- Route guards
+- Redirects
+- History and memory modes
+- Navigate back, forward, or to a specific step
+
+### Why Do You Exist?
+
+I was created as a simple and lightweight alternative to vue-router. ⚡
+
+### I Need New Features
+
+Feel free to open an issue or a pull request! Let's discuss it.
+
+When submitting a pull request, keep everything minimal and simple. I like to stay lightweight! 🕺
+
+#vuejs #vue3 #router #javascript #webdev
