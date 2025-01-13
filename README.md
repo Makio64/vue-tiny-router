@@ -20,7 +20,6 @@ Hello! I'm **vue-tiny-router**, a tiny (0.98kb) router for Vue3. Nice to meet yo
   - [What Can You Do? 💪](#what-can-you-do-💪)
   - [Why a New Router? 🫠](#why-a-new-router-🫠)
   - [Need More Features? 💡](#need-more-features-💡)
-- [Thanks ❤️](#thanks-for-reading-❤️)
 
 
 ## Getting Started
@@ -55,14 +54,12 @@ app.mount('#app')
 **2. Configure the Router in Your App Component**
 
 
-```vue
-<!-- App.vue -->
+```js
 <template>
-  <!-- All routed pages will render inside this TinyRouter component -->
   <TinyRouter :routes="routes" :redirects="redirects" />
 </template>
 
-<script>
+<script lang='js'>
 // usually App.vue
 import { TinyRouter } from 'vue-tiny-router' // Import the router
 import { HomeView, ProfileView } from '@/views' // Import your page components
@@ -93,8 +90,7 @@ Navigate directly using `$router`:
 ```
 
 Or navigate via `methods`:
-```vue
-<!-- ExampleComponent.vue -->
+```js
 <template>
   <div class="button" @click="goProfile">Profile</div>
 </template>
@@ -129,7 +125,7 @@ No worries—I'm not complicating things! I simply add a friendly `$router` prop
 - redirects `Object (default:{})`
 - memoryMode `Boolean (default:false)`
 
-```vue
+```js
   <TinyRouter :routes="routes" :redirects="redirects" :memoryMode="false" />
 ```
 
@@ -190,7 +186,7 @@ To keep me small I use the History API for navigation methods:
 Enable memoryMode to manage routing purely in memory without affecting the browser's history or URL.
 
 **Usage:**
-```vue
+```js
 <TinyRouter :routes="routes" :memoryMode="true" />
 ```
 
