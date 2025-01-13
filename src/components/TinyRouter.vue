@@ -6,9 +6,9 @@
 import { ref } from 'vue'
 let TinyRouterInstance
 
-export const defaultRoute = ref( '/' )
-export const initialRoute = ref( window.location.pathname )
-export const initialQuery = ref( window.location.search )
+export const defaultRoute = ref( null )
+export const initialRoute = ref( window?.location.pathname )
+export const initialQuery = ref( window?.location.search )
 
 const TinyRouter = {
 	name: 'TinyRouter',
@@ -37,8 +37,8 @@ const TinyRouter = {
 	},
 	created() {
 		TinyRouterInstance = this
-		if( !this.memoryMode ) window.addEventListener( 'popstate', () => this.push( window.location.pathname, true ) )
-		this.push( defaultRoute.value + initialQuery.value || window.location.pathname + initialQuery.value )
+		if( !this.memoryMode ) window?.addEventListener( 'popstate', () => this.push( window?.location.pathname, true ) )
+		this.push( (defaultRoute.value || initialRoute.value ) + initialQuery.value )
 	},
 	methods: {
 		proceed( path, isPop = false ) {
