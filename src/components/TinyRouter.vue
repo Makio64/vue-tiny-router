@@ -20,7 +20,8 @@ const TinyRouter = {
 	data: () => ( { route: '', routeParams: {} } ),
 	computed: {
 		currentComponent() {
-			const resolved = this.redirects[this.route.split( '?' )[0]] || this.route
+			const pathOnly = this.route.split('?')[0]
+			const resolved = this.redirects[pathOnly] || pathOnly
 			const match = this.routes.find( r => {
 				if ( !resolved ) return false
 				const paramNames = []
