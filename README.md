@@ -9,17 +9,18 @@ Hello! I'm **vue-tiny-router**, a tiny (0.98kb) router for Vue3. Nice to meet yo
   - [Quick Start 🚀](#quick-start-)
 - [API Reference ✨](#api-reference-)
   - [Navigate to a Page 🔗](#navigate-to-a-page-)
-  - [Route Parameters 🛠️](#route-parameters-)
-  - [Route Guards 💂‍♂️](#route-guards-)
+  - [Route Parameters 🛠️](#parameters-)
+  - [Route Guards 💂‍♂️](#route-guard-)
   - [Default Route 🗺️](#default-route-)
   - [History Management 📜](#history-management-)
   - [Memory Mode 💾](#memory-mode-)
-- [Asynchronous Loading ⚡](#asynchronous-loading-⚡)
-- [FAQ 💬](#faq-💬)
-  - [What’s Your Size? 🤏](#whats-your-size)
+- [Asynchronous Loading ⚡](#async-loading-)
+- [FAQ 💬](#faq-)
+  - [What’s Your Size? 🤏](#whats-your-size-)
   - [What Can You Do? 💪](#what-can-you-do-)
   - [Why a New Router? 🫠](#why-a-new-router-)
-  - [Need More Features? 💡](#need-more-features-)
+  - [Need More Features? 💡](#i-need-more-features-)
+  - [Is it well tested? 🔍](#is-it-well-tested-)
 
 
 ## Getting Started
@@ -197,7 +198,7 @@ Enable memoryMode to manage routing purely in memory without affecting the brows
 
 ## FAQ 💬
 
-### What's Your Size?
+### What's Your Size? 🤏
 
 I'm the smallest! 🤏
 
@@ -218,6 +219,10 @@ My big brother `vue-router` was too bulky for my needs (~30kb vs ~1kb) so I'm de
 Feel free to open an issue or a pull request and let's discuss it. 💬
 
 **For pull request** , keep everything minimalist as much as possible. I want to stay slim! 🕺
+
+### Is it well tested? 🔍
+
+Since `v1.0.4` TinyRouter have automatic tests to make sure all scenario works well ! 🚀
 
 ## Thanks for reading ❤️
 
