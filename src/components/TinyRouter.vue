@@ -20,7 +20,7 @@ const TinyRouter = {
 	data: () => ( { route: '', routeParams: {} } ),
 	computed: {
 		currentComponent() {
-			const pathOnly = this.route.split('?')[0]
+			const pathOnly = this.route.split( '#' )[0].split( '?' )[0]
 			const resolved = this.redirects[pathOnly] || pathOnly
 			const match = this.routes.find( r => {
 				if ( !resolved ) return false
@@ -39,7 +39,7 @@ const TinyRouter = {
 	created() {
 		TinyRouterInstance = this
 		if( !this.memoryMode ) window?.addEventListener( 'popstate', () => this.push( window?.location.pathname, true ) )
-		this.push( (defaultRoute.value || initialRoute.value ) + initialQuery.value )
+		this.push( ( defaultRoute.value || initialRoute.value ) + initialQuery.value )
 	},
 	methods: {
 		proceed( path, isPop = false ) {
@@ -47,6 +47,7 @@ const TinyRouter = {
 			this.route = path
 		},
 		push( path, isPop = false ) {
+			if ( path === this.route ) return
 			const leaveGuard = this.$refs.activeView?.beforeRouteLeave
 			leaveGuard ? leaveGuard( () => this.proceed( path, isPop ) ) : this.proceed( path, isPop )
 		}
@@ -55,6 +56,7 @@ const TinyRouter = {
 
 export default TinyRouter
 
+export { TinyRouter }
 export const TinyRouterInstall = {
 	install( app ) {
 		app.component( 'TinyRouter', TinyRouter )
