@@ -210,10 +210,10 @@ interceptURL.value = ['/sign-in', '/sign-up']
 ```
 
 **Benefits:**
-- Allows standard `<a href="/about">About</a>` links to work with the router
+- Allows standard `<a href="/sign-in">Login</a>` links to work with the router
 - Preserves SPA behavior without requiring manual click handlers
 - Improves SEO and accessibility by using semantic HTML
-- Usefull to intercept behavior from external components, like login page from Clerks
+- Usefull to intercept behavior from external components, for example a login component
 
 ## FAQ 💬
 
