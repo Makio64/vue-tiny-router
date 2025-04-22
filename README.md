@@ -14,6 +14,7 @@ Hello! I'm **vue-tiny-router**, a tiny (0.98kb) router for Vue3. Nice to meet yo
   - [Default Route 🗺️](#default-route-)
   - [History Management 📜](#history-management-)
   - [Memory Mode 💾](#memory-mode-)
+  - [Intercepting External Links 🔗](#intercepting-external-links-)
 - [Asynchronous Loading ⚡](#async-loading-)
 - [FAQ 💬](#faq-)
   - [What’s Your Size? 🤏](#whats-your-size-)
@@ -195,6 +196,24 @@ Enable memoryMode to manage routing purely in memory without affecting the brows
 
 - Ideal for embedded environments. ( Nodejs )
 - Prevents altering the actual browser history.
+
+### Intercepting External Links 🔗
+
+Use `interceptURL` to make standard anchor links work with the router instead of causing full page reloads.
+
+**Usage:**
+```js
+import { interceptURL } from 'vue-tiny-router'
+
+// Add paths you want the router to intercept
+interceptURL.value = ['/sign-in', '/sign-up']
+```
+
+**Benefits:**
+- Allows standard `<a href="/about">About</a>` links to work with the router
+- Preserves SPA behavior without requiring manual click handlers
+- Improves SEO and accessibility by using semantic HTML
+- Usefull to intercept behavior from external components, like login page from Clerks
 
 ## FAQ 💬
 
