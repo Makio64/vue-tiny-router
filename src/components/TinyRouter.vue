@@ -4,8 +4,11 @@
 
 <script>
 import { ref } from 'vue'
-let TinyRouterInstance
 
+let TinyRouterInstance
+let isNavigatingProgrammatically = false
+
+export const interceptURL = ref( [] )
 export const defaultRoute = ref( null )
 export const initialRoute = ref( window?.location.pathname )
 export const initialQuery = ref( window?.location.search )
@@ -43,7 +46,12 @@ const TinyRouter = {
 	},
 	methods: {
 		proceed( path, isPop = false ) {
-			if ( !isPop ) this.memoryMode ? this.push( path, true ) : history.pushState( null, '', path )
+			if ( !isPop ) {
+				isNavigatingProgrammatically = true
+				setTimeout( () => { isNavigatingProgrammatically = false }, 0 )
+				if ( this.memoryMode ) this.push( path, true )
+				else history.pushState( null, '', path )
+			}
 			this.route = path
 		},
 		push( path, isPop = false ) {
@@ -53,6 +61,15 @@ const TinyRouter = {
 		}
 	}
 }
+
+// Handle external links
+navigation.addEventListener( "navigate", ( event ) => {
+	const { pathname, search, hash, origin } = new URL( event.destination.url )
+	if ( isNavigatingProgrammatically || origin !== window.location.origin || !interceptURL.value.includes( pathname ) ) return
+	event.preventDefault()
+	const path = pathname + search + hash
+	TinyRouterInstance ? TinyRouterInstance.push( path ) : ( window.location.href = path )
+} )
 
 export default TinyRouter
 
