@@ -221,8 +221,8 @@ interceptURL.value = ['/sign-in', '/sign-up']
 
 I'm the smallest! 🤏
 
-- **0.98kb** with Brotli compression
-- **2.58kb** without compression
+- **1.02kb** with Brotli compression
+- **2.50kb** without compression
 
 ### What Can You Do? 💪
 I focus on easily switch pages in your app. 
