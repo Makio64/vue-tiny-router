@@ -55,6 +55,7 @@ const TinyRouter = {
 			this.route = path
 		},
 		push( path, isPop = false ) {
+			path = path.replace(/\/{2,}/g, '/')
 			if ( path === this.route ) return
 			const leaveGuard = this.$refs.activeView?.beforeRouteLeave
 			leaveGuard ? leaveGuard( () => this.proceed( path, isPop ) ) : this.proceed( path, isPop )
@@ -63,13 +64,16 @@ const TinyRouter = {
 }
 
 // Handle external links
-navigation.addEventListener( "navigate", ( event ) => {
-	const { pathname, search, hash, origin } = new URL( event.destination.url )
-	if ( isNavigatingProgrammatically || origin !== window.location.origin || !interceptURL.value.includes( pathname ) ) return
-	event.preventDefault()
-	const path = pathname + search + hash
-	TinyRouterInstance ? TinyRouterInstance.push( path ) : ( window.location.href = path )
-} )
+if (typeof navigation !== 'undefined') {
+	navigation?.addEventListener( "navigate", ( event ) => {
+		const { pathname, search, hash, origin } = new URL( event.destination.url )
+		if ( isNavigatingProgrammatically || origin !== window.location.origin || !interceptURL.value.includes( pathname ) ) return
+		event.preventDefault()
+		let path = pathname + search + hash
+		path = path.replace(/\/{2,}/g, '/')
+		TinyRouterInstance ? TinyRouterInstance.push( path ) : ( window.location.href = path )
+	} )
+}
 
 export default TinyRouter
 
