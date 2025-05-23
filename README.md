@@ -1,252 +1,173 @@
-# vue-tiny-router 🌱
+# vue-tiny-router
 
-Hello! I'm **vue-tiny-router**, a tiny (0.98kb) router for Vue3. Nice to meet you! 👋
+A lightweight Vue 3 router. **Only 1kb gzipped** with all the features you need.
 
-## Summary 🌟
+## Why vue-tiny-router?
 
-- [Getting Started](#getting-started)
-  - [Installation 📦](#installation-)
-  - [Quick Start 🚀](#quick-start-)
-- [API Reference ✨](#api-reference-)
-  - [Navigate to a Page 🔗](#navigate-to-a-page-)
-  - [Route Parameters 🛠️](#parameters-)
-  - [Route Guards 💂‍♂️](#route-guard-)
-  - [Default Route 🗺️](#default-route-)
-  - [History Management 📜](#history-management-)
-  - [Memory Mode 💾](#memory-mode-)
-  - [Intercepting External Links 🔗](#intercepting-external-links-)
-- [Asynchronous Loading ⚡](#async-loading-)
-- [FAQ 💬](#faq-)
-  - [What’s Your Size? 🤏](#whats-your-size-)
-  - [What Can You Do? 💪](#what-can-you-do-)
-  - [Why a New Router? 🫠](#why-a-new-router-)
-  - [Need More Features? 💡](#i-need-more-features-)
-  - [Is it well tested? 🔍](#is-it-well-tested-)
+- 🤏 **Tiny**: 1.02kb gzipped (vs 30kb+ for vue-router)
+- ⚡ **Fast**: Minimal overhead, maximum performance
+- 🎯 **Simple**: Easy setup, intuitive API
+- 💪 **Complete**: Route params, guards, lazy loading, redirects
 
+## Quick Start
 
-## Getting Started
+### 1. Install
 
-### Installation 📦
-
-Use your preferred package manager to install me:
 ```bash
-npm i vue-tiny-router
-# or
-pnpm i vue-tiny-router
-# or
-yarn add vue-tiny-router
+npm install vue-tiny-router
 ```
 
-### Quick Start 🚀
-
-**1. Register the Router in Your App**
-
-Typically in `main.js`:
+### 2. Setup
 
 ```js
 // main.js
-import App from '@/App.vue'
+import { createApp } from 'vue'
+import App from './App.vue'
 import { TinyRouterInstall } from 'vue-tiny-router'
 
-const app = createApp(App)
-app.use(TinyRouterInstall)
-app.mount('#app')
+createApp(App)
+  .use(TinyRouterInstall)
+  .mount('#app')
 ```
 
-**2. Configure the Router in Your App Component**
+### 3. Configure Routes
 
-
-```js
+```vue
+<!-- App.vue -->
 <template>
-  <TinyRouter :routes="routes" :redirects="redirects" />
-</template>
-
-<script lang='js'>
-// usually App.vue
-import { TinyRouter } from 'vue-tiny-router' // Import the router
-import { HomeView, ProfileView } from '@/views' // Import your page components
-
-export default {
-
-  data(){
-    return {
-      routes: [ 
-        { path: '/', component: HomeView }, 
-        { path: '/profile/:username', component: ProfileView }
-      ],
-      redirects: { '/home': '/' }
-    }
-  },
-
-  components: { TinyRouter } // Make TinyRouter available in the template
-}
-</script>
-```
-
-**3. Implement Navigation Actions**
-
-Navigate directly using `$router`:
-```html
-<div class="button" @click="$router.push('/home')">Home</div>
-<div class="button" @click="$router.push(`/profile/${username}`)">My Profile</div>
-```
-
-Or navigate via `methods`:
-```js
-<template>
-  <div class="button" @click="goProfile">Profile</div>
+  <TinyRouter :routes="routes" />
 </template>
 
 <script>
+import { TinyRouter } from 'vue-tiny-router'
+import Home from './views/Home.vue'
+import Profile from './views/Profile.vue'
+
 export default {
-  data : ()=> ({
-      username: 'makio64',
-  }),
-  methods: {
-    goProfile() {
-      this.$router.push(`/profile/${this.username}`)
-    },
-  },
+  components: { TinyRouter },
+  data() {
+    return {
+      routes: [
+        { path: '/', component: Home },
+        { path: '/profile/:id', component: Profile }
+      ]
+    }
+  }
 }
 </script>
 ```
 
+### 4. Navigate
 
-## API Reference ✨
-
-No worries—I'm not complicating things! I simply add a friendly `$router` property to your components.
-
-### Available Properties and Methods 🌐
-- `$router.push(path)` navigates to a new route,
-- `$router.route` gives you the current path,
-- `$router.params` is the object holding route parameters,
-- `$router.component` references the current TinyRouter component.
-
-### TinyRouter Component Props 📦
-- routes `Array of Objects`
-- redirects `Object (default:{})`
-- memoryMode `Boolean (default:false)`
-
-```js
-  <TinyRouter :routes="routes" :redirects="redirects" :memoryMode="false" />
+```vue
+<template>
+  <button @click="$router.push('/')">Home</button>
+  <button @click="$router.push('/profile/123')">Profile</button>
+</template>
 ```
 
-### Navigate to a Page 🔗
+That's it! 🎉
 
-Use `this.$router.push( path )` to go to the page define by path.
+## API Reference
 
-### Parameters 🛠️
-Use `this.$router.params` to get the parameters of the current route.
+### Router Methods
+- `$router.push(path)` - Navigate to a route
+- `$router.route` - Current route path
+- `$router.params` - Route parameters object
 
-For example if your route is `/profile/:username`, you can grab the username via: `this.$router.params.username`
-
-### Route Guard 💂‍♂️
-
-I let you define a "leave" guard in your component using `beforeRouteLeave(next, to)`. 
-This is perfect if you want to prevent navigation until an async task finishes 
-or show a fancy animation before heading out. 
-Just be sure to call `next()` when you're done to let me continue!
-
+### Component Props
 ```js
-beforeRouteLeave(next, to) {
-  // Option 1: for example make a transition out and then call next
-  animate(this.$el, {opacity:0, duration:1, onComplete:next})
+<TinyRouter 
+  :routes="routes"           // Required: Array of route objects
+  :redirects="redirects"     // Optional: Redirect mappings
+  :memoryMode="false"        // Optional: In-memory routing
+/>
+```
 
-  // Option 2: Perform an action and call next directly
-  this.saveData()
-  next()
+## Advanced Features
+
+### Route Parameters
+Access dynamic route segments:
+```js
+// Route: /user/:id
+// URL: /user/123
+this.$router.params.id // "123"
+```
+
+### Route Guards
+Prevent navigation or add animations:
+```js
+export default {
+  beforeRouteLeave(next, to) {
+    // Do something async, then call next()
+    this.saveData().then(next)
+  }
 }
 ```
 
-### Async Loading ⚡
-
-Use `defineAsyncComponent` from Vue for lazy loading. 
+### Lazy Loading
+Reduce initial bundle size:
 ```js
-routes: [
-  { path: '/', component: defineAsyncComponent(() => import('@/views/HomeView')) },
-  { path: '/profile/:username', component: defineAsyncComponent(() => import('@/views/ProfileView')) },
+import { defineAsyncComponent } from 'vue'
+
+const routes = [
+  { 
+    path: '/heavy', 
+    component: defineAsyncComponent(() => import('./HeavyComponent.vue'))
+  }
 ]
 ```
-This helps reduce the initial load time! I recommend to use it but you're the boss! 👑
 
-### Default Route 🗺️
-- You can define a default route using `defaultRoute.value = '/loader'` then I'll redirect all your user to this route by default
-- I also save the initial path & query in `initialPath` & `initialQuery`
+### Redirects
 ```js
-  import {defaultRoute, initialPath, initialQuery} from 'vue-tiny-router'
+const redirects = {
+  '/old-path': '/new-path',
+  '/home': '/'
+}
 ```
 
-### History Management 📜
-
-To keep me small I use the History API for navigation methods:
-- `history.back()`: Navigate back.
-- `history.forward()`: Navigate forward.
-- `history.go(n)`: Move `n` steps in history.
-
-### Memory Mode 💾
-
-Enable memoryMode to manage routing purely in memory without affecting the browser's history or URL.
-
-**Usage:**
+### Default Routes
 ```js
+import { defaultRoute } from 'vue-tiny-router'
+defaultRoute.value = '/dashboard'
+```
+
+### Memory Mode
+Perfect for embedded apps or testing:
+```vue
 <TinyRouter :routes="routes" :memoryMode="true" />
 ```
 
-**Benefits:**
-
-- Ideal for embedded environments. ( Nodejs )
-- Prevents altering the actual browser history.
-
-### Intercepting External Links 🔗
-
-Use `interceptURL` to make standard anchor links work with the router instead of causing full page reloads.
-
-**Usage:**
+### Intercept Links
+Make regular `<a>` tags work with the router:
 ```js
 import { interceptURL } from 'vue-tiny-router'
-
-// Add paths you want the router to intercept
-interceptURL.value = ['/sign-in', '/sign-up']
+interceptURL.value = ['/login', '/signup']
 ```
 
-**Benefits:**
-- Allows standard `<a href="/sign-in">Login</a>` links to work with the router
-- Preserves SPA behavior without requiring manual click handlers
-- Improves SEO and accessibility by using semantic HTML
-- Usefull to intercept behavior from external components, for example a login component
+## Migration from vue-router
 
-## FAQ 💬
+Most common patterns work the same:
 
-### What's Your Size? 🤏
+| vue-router | vue-tiny-router |
+|------------|-----------------|
+| `$router.push()` | `$router.push()` ✅ |
+| `$route.params` | `$router.params` ✅ |
+| `beforeRouteLeave` | `beforeRouteLeave` ✅ |
+| Route guards | Route guards ✅ |
+| Lazy loading | Lazy loading ✅ |
 
-I'm the smallest! 🤏
+## Browser Support
 
-- **1.02kb** with Brotli compression
-- **2.50kb** without compression
+Works in all modern browsers that support ES6+ and the History API.
 
-### What Can You Do? 💪
-I focus on easily switch pages in your app. 
+## Contributing
 
-I support basic and dynamic routes, handle redirects, manage browsing history, and lazy loading.
+Keep it tiny! When contributing:
+- Maintain minimal bundle size
+- Ensure all tests pass
+- Follow the simple API design
 
-Finaly make smooth transition using my `leaveGuard` before leaving a page.
+## License
 
-### Why a new Router? 🫠
-My big brother `vue-router` was too bulky for my needs (~30kb vs ~1kb) so I'm design as a minimalist alternative with lightness and performance as priority. ⚡ 
-
-### I Need More Features? 💡
-Feel free to open an issue or a pull request and let's discuss it. 💬
-
-**For pull request** , keep everything minimalist as much as possible. I want to stay slim! 🕺
-
-### Is it well tested? 🔍
-
-Since `v1.0.4` TinyRouter have automatic tests to make sure all scenario works well ! 🚀
-
-## Thanks for reading ❤️
-
-I'm excited to work together and help you build cool projects!
-
-Best, 
-
-**vue-tiny-router**
+MIT
