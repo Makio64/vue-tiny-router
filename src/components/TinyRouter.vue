@@ -8,16 +8,43 @@ import { ref } from 'vue'
 let TinyRouterInstance
 let isNavigatingProgrammatically = false
 
+/** 
+ * Array of URL paths to intercept with router navigation
+ * @example interceptURL.value = ['/login', '/signup']
+ */
 export const interceptURL = ref( [] )
+
+/** 
+ * Default route to redirect to on app start
+ * @example defaultRoute.value = '/home'
+ */
 export const defaultRoute = ref( null )
+
+/** Initial route when app started */
 export const initialRoute = ref( window?.location.pathname )
+
+/** Initial query params when app started */
 export const initialQuery = ref( window?.location.search )
 
 const TinyRouter = {
 	name: 'TinyRouter',
 	props: {
+		/** 
+		 * Array of route objects with path and component
+		 * @example [{ path: '/', component: Home }, { path: '/user/:id', component: User }]
+		 */
 		routes: { type: Array, required: true },
+		
+		/** 
+		 * Object mapping old paths to new paths for redirects
+		 * @example { '/old': '/new', '/home': '/' }
+		 */
 		redirects: { type: Object, default: () => ( {} ) },
+		
+		/** 
+		 * Enable memory-only routing (doesn't affect browser URL/history)
+		 * Useful for embedded apps or testing
+		 */
 		memoryMode: { type: Boolean, default: false }
 	},
 	data: () => ( { route: '', routeParams: {} } ),
@@ -54,6 +81,12 @@ const TinyRouter = {
 			}
 			this.route = path
 		},
+		
+		/** 
+		 * Navigate to a new route
+		 * @param {string} path - The path to navigate to (e.g., '/user/123')
+		 * @param {boolean} isPop - Internal flag for history navigation
+		 */
 		push( path, isPop = false ) {
 			path = path.replace(/\/{2,}/g, '/')
 			if ( path === this.route ) return
@@ -78,13 +111,25 @@ if (typeof navigation !== 'undefined') {
 export default TinyRouter
 
 export { TinyRouter }
+
+/**
+ * Vue plugin installer - adds TinyRouter component and $router global property
+ * Usage: app.use(TinyRouterInstall)
+ */
 export const TinyRouterInstall = {
 	install( app ) {
 		app.component( 'TinyRouter', TinyRouter )
 		app.config.globalProperties.$router = {
+			/** Navigate to a route - this.$router.push('/path') */
 			push( path ) { TinyRouterInstance?.push( path ) },
+			
+			/** Get current route path - this.$router.route */
 			get route() { return TinyRouterInstance?.route },
+			
+			/** Get current component instance - this.$router.component */
 			get component() { return TinyRouterInstance?.currentComponent },
+			
+			/** Get route parameters object - this.$router.params.id */
 			get params() { return TinyRouterInstance?.routeParams },
 			// this is native history API so doesnt need to be wrapped, dont work in memorymode
 			// go( n ) { history.go( n ) },
