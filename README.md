@@ -4,7 +4,7 @@ A lightweight Vue 3 router. **Only 1kb gzipped** with all the features you need.
 
 ## Why vue-tiny-router?
 
-- 🤏 **Tiny**: 1.02kb gzipped (vs 30kb+ for vue-router)
+- 🤏 **Tiny**: 1.02kb gzipped
 - ⚡ **Fast**: Minimal overhead, maximum performance
 - 🎯 **Simple**: Easy setup, intuitive API
 - 💪 **Complete**: Route params, guards, lazy loading, redirects
