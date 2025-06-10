@@ -391,5 +391,34 @@ describe('TinyRouter', () => {
         expect(event.preventDefault).not.toHaveBeenCalled()
         expect(wrapper.findComponent(Home).exists()).toBe(true)
     })
+
+    it('intercepts navigation to a known route with params', async () => {
+      const routes = [
+          { path: '/', component: Home },
+          { path: '/user/:id', component: User }
+      ]
+      
+      const wrapper = mount(TinyRouterFresh, { props: { routes } })
+      vi.runAllTimers()
+      await nextTick()
+
+      const navigateListener = navigationEventListeners.get('navigate')
+      expect(navigateListener).toBeDefined()
+      
+      const event = {
+          destination: { url: new URL('http://localhost/user/abc') },
+          preventDefault: vi.fn()
+      }
+      
+      navigateListener(event)
+      
+      expect(event.preventDefault).toHaveBeenCalled()
+
+      await nextTick()
+      
+      expect(wrapper.findComponent(User).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user/abc')
+      expect(wrapper.vm.routeParams).toEqual({ id: 'abc' })
+    })
   })
 })

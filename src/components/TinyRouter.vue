@@ -23,18 +23,26 @@ export const initialQuery = ref( window?.location.search )
 const findMatch = ( path, routes, redirects ) => {
 	const pathOnly = path.split( '#' )[0].split( '?' )[0]
 	const resolved = redirects[pathOnly] || pathOnly
-	let params = {}
-	const route = routes.find( r => {
-		if ( !resolved ) return false
+	if ( !resolved ) return { route: null, params: {}, resolved: pathOnly }
+
+	for ( const route of routes ) {
 		const paramNames = []
-		const regex = r.path.replace( /:([^/]+)/g, ( _, n ) => ( paramNames.push( n ), '([^/]+)' ) )
-		const found = resolved.match( new RegExp( `^${regex}$` ) )
-		if ( found ) {
-			params = paramNames.reduce( ( acc, name, i ) => ( acc[name] = found[i + 1], acc ), {} )
-			return true
+		const regex = new RegExp( '^' + route.path.replace( /:([^/]+)/g, ( _, name ) => {
+			paramNames.push( name )
+			return '([^/]+)'
+		} ) + '$' )
+		const match = resolved.match( regex )
+
+		if ( match ) {
+			const params = paramNames.reduce( ( acc, name, i ) => {
+				acc[name] = match[i + 1]
+				return acc
+			}, {} )
+			return { route, params, resolved }
 		}
-	} )
-	return { route, params, resolved }
+	}
+
+	return { route: null, params: {}, resolved }
 }
 
 const TinyRouter = {
