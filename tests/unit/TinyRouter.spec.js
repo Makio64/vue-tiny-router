@@ -289,6 +289,41 @@ describe('TinyRouter', () => {
     expect(window.history.pushState).not.toHaveBeenCalled()
   })
 
+  it('re-creates component when navigating to same route with different params', async () => {
+    const ComponentWithState = markRaw(defineComponent({
+      name: 'ComponentWithState',
+      props: ['routeParams'],
+      template: '<div>ID: {{ internalId }}</div>',
+      data() {
+        return {
+          internalId: this.routeParams.id,
+        }
+      },
+    }))
+
+    const routes = [
+      { path: '/', component: Home },
+      { path: '/item/:id', component: ComponentWithState },
+    ]
+
+    const wrapper = mount(TinyRouter, {
+      props: { routes },
+    })
+    await nextTick()
+
+    await wrapper.vm.push('/item/1')
+    await nextTick()
+    
+    expect(wrapper.findComponent(ComponentWithState).exists()).toBe(true)
+    expect(wrapper.text()).toBe('ID: 1')
+
+    await wrapper.vm.push('/item/2')
+    await nextTick()
+    
+    expect(wrapper.findComponent(ComponentWithState).exists()).toBe(true)
+    expect(wrapper.text()).toBe('ID: 2')
+  })
+
   describe('Navigation Interception', () => {
     let TinyRouterFresh
     let mockNavigation

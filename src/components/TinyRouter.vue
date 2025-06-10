@@ -1,5 +1,5 @@
 <template>
-	<component :is="currentComponent" ref="activeView" :route-params="routeParams" />
+	<component :is="currentComponent" ref="activeView" :key="route" :route-params="routeParams" />
 </template>
 
 <script>
