@@ -138,12 +138,8 @@ Perfect for embedded apps or testing:
 <TinyRouter :routes="routes" :memoryMode="true" />
 ```
 
-### Intercept Links
-Make regular `<a>` tags work with the router:
-```js
-import { interceptURL } from 'vue-tiny-router'
-interceptURL.value = ['/login', '/signup']
-```
+### Automatic Link Interception
+`vue-tiny-router` automatically intercepts clicks on `<a>` tags. If the link's destination is a route managed by the router, it will prevent a page reload and handle it as an in-app navigation. For all other links (external sites or unhandled paths), it will allow the browser's default behavior. No configuration is needed.
 
 ## Migration from vue-router
 

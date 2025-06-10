@@ -55,7 +55,7 @@ describe('TinyRouter', () => {
     
     // Mock location and history methods
     delete window.location
-    window.location = { pathname: '/', search: '' }
+    window.location = { pathname: '/', search: '', origin: 'http://localhost' }
     
     window.history = {
       ...window.history,
@@ -287,5 +287,109 @@ describe('TinyRouter', () => {
     
     // But history.pushState should not be called
     expect(window.history.pushState).not.toHaveBeenCalled()
+  })
+
+  describe('Navigation Interception', () => {
+    let TinyRouterFresh
+    let mockNavigation
+    let navigationEventListeners
+
+    beforeEach(async () => {
+      vi.useFakeTimers()
+      navigationEventListeners = new Map()
+      mockNavigation = {
+        addEventListener: vi.fn((event, listener) => {
+          navigationEventListeners.set(event, listener)
+        }),
+      }
+      vi.stubGlobal('navigation', mockNavigation)
+
+      vi.resetModules()
+      const routerModule = await import('../../src/components/TinyRouter.vue')
+      TinyRouterFresh = routerModule.default
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('automatically intercepts navigation to a known route', async () => {
+        const routes = [
+            { path: '/', component: Home },
+            { path: '/about', component: About }
+        ]
+        
+        const wrapper = mount(TinyRouterFresh, { props: { routes } })
+        vi.runAllTimers()
+        await nextTick()
+
+        const navigateListener = navigationEventListeners.get('navigate')
+        expect(navigateListener).toBeDefined()
+        
+        const event = {
+            destination: { url: new URL('http://localhost/about') },
+            preventDefault: vi.fn()
+        }
+        
+        navigateListener(event)
+        
+        expect(event.preventDefault).toHaveBeenCalled()
+
+        await nextTick()
+        
+        expect(wrapper.findComponent(About).exists()).toBe(true)
+        expect(wrapper.vm.route).toBe('/about')
+    })
+
+    it('does not intercept navigation to an unknown route', async () => {
+        const routes = [
+            { path: '/', component: Home },
+            { path: '/about', component: About }
+        ]
+        
+        const wrapper = mount(TinyRouterFresh, { props: { routes } })
+        vi.runAllTimers()
+        await nextTick()
+
+        const navigateListener = navigationEventListeners.get('navigate')
+        expect(navigateListener).toBeDefined()
+        
+        const event = {
+            destination: { url: new URL('http://localhost/unknown') },
+            preventDefault: vi.fn()
+        }
+        
+        navigateListener(event)
+        await nextTick()
+        
+        expect(event.preventDefault).not.toHaveBeenCalled()
+        expect(wrapper.findComponent(Home).exists()).toBe(true) // Should stay on initial route
+        expect(wrapper.vm.route).toBe('/')
+    })
+
+    it('does not intercept navigation to a different origin', async () => {
+        const routes = [
+            { path: '/', component: Home },
+            { path: '/about', component: About }
+        ]
+        
+        const wrapper = mount(TinyRouterFresh, { props: { routes } })
+        vi.runAllTimers()
+        await nextTick()
+
+        const navigateListener = navigationEventListeners.get('navigate')
+        expect(navigateListener).toBeDefined()
+        
+        const event = {
+            destination: { url: new URL('https://example.com/about') },
+            preventDefault: vi.fn()
+        }
+        
+        navigateListener(event)
+        await nextTick()
+        
+        expect(event.preventDefault).not.toHaveBeenCalled()
+        expect(wrapper.findComponent(Home).exists()).toBe(true)
+    })
   })
 })

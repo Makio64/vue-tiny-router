@@ -1,4 +1,4 @@
-import TinyRouter, { TinyRouterInstall, defaultRoute, initialRoute, initialQuery, interceptURL } from './components/TinyRouter.vue'
+import TinyRouter, { TinyRouterInstall, defaultRoute, initialRoute, initialQuery } from './components/TinyRouter.vue'
 
 export default TinyRouter
-export { TinyRouter, TinyRouterInstall, defaultRoute, initialRoute, initialQuery, interceptURL }
+export { TinyRouter, TinyRouterInstall, defaultRoute, initialRoute, initialQuery }

@@ -9,12 +9,6 @@ let TinyRouterInstance
 let isNavigatingProgrammatically = false
 
 /** 
- * Array of URL paths to intercept with router navigation
- * @example interceptURL.value = ['/login', '/signup']
- */
-export const interceptURL = ref( [] )
-
-/** 
  * Default route to redirect to on app start
  * @example defaultRoute.value = '/home'
  */
@@ -25,6 +19,23 @@ export const initialRoute = ref( window?.location.pathname )
 
 /** Initial query params when app started */
 export const initialQuery = ref( window?.location.search )
+
+const findMatch = ( path, routes, redirects ) => {
+	const pathOnly = path.split( '#' )[0].split( '?' )[0]
+	const resolved = redirects[pathOnly] || pathOnly
+	let params = {}
+	const route = routes.find( r => {
+		if ( !resolved ) return false
+		const paramNames = []
+		const regex = r.path.replace( /:([^/]+)/g, ( _, n ) => ( paramNames.push( n ), '([^/]+)' ) )
+		const found = resolved.match( new RegExp( `^${regex}$` ) )
+		if ( found ) {
+			params = paramNames.reduce( ( acc, name, i ) => ( acc[name] = found[i + 1], acc ), {} )
+			return true
+		}
+	} )
+	return { route, params, resolved }
+}
 
 const TinyRouter = {
 	name: 'TinyRouter',
@@ -50,20 +61,10 @@ const TinyRouter = {
 	data: () => ( { route: '', routeParams: {} } ),
 	computed: {
 		currentComponent() {
-			const pathOnly = this.route.split( '#' )[0].split( '?' )[0]
-			const resolved = this.redirects[pathOnly] || pathOnly
-			const match = this.routes.find( r => {
-				if ( !resolved ) return false
-				const paramNames = []
-				const regex = r.path.replace( /:([^/]+)/g, ( _, n ) => ( paramNames.push( n ), '([^/]+)' ) )
-				const found = resolved.match( new RegExp( `^${regex}$` ) )
-				if ( found ) {
-					this.routeParams = paramNames.reduce( ( acc, name, i ) => ( acc[name] = found[i + 1], acc ), {} )
-					return true
-				}
-			} )
-			if ( !match ) console.warn( `Route "${resolved}" not found` )
-			return match ? match.component : this.routes[0].component
+			const { route, params, resolved } = findMatch( this.route, this.routes, this.redirects )
+			this.routeParams = params
+			if ( !route ) console.warn( `Route "${resolved}" not found` )
+			return route ? route.component : this.routes[0].component
 		}
 	},
 	created() {
@@ -100,11 +101,16 @@ const TinyRouter = {
 if (typeof navigation !== 'undefined') {
 	navigation?.addEventListener( "navigate", ( event ) => {
 		const { pathname, search, hash, origin } = new URL( event.destination.url )
-		if ( isNavigatingProgrammatically || origin !== window.location.origin || !interceptURL.value.includes( pathname ) ) return
+		if ( isNavigatingProgrammatically || origin !== window.location.origin || !TinyRouterInstance ) return
+
+		const { route } = findMatch( pathname, TinyRouterInstance.routes, TinyRouterInstance.redirects )
+
+		if ( !route ) return
+
 		event.preventDefault()
 		let path = pathname + search + hash
 		path = path.replace(/\/{2,}/g, '/')
-		TinyRouterInstance ? TinyRouterInstance.push( path ) : ( window.location.href = path )
+		TinyRouterInstance.push( path )
 	} )
 }
 
