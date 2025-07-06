@@ -89,6 +89,11 @@ const TinyRouter = {
 				else history.pushState( null, '', path )
 			}
 			this.route = path
+			// Anchor support – if the path contains a hash, scroll to the element with the corresponding id
+			if ( typeof document !== 'undefined' ) {
+				const hash = path.split( '#' )[1]
+				if ( hash ) requestAnimationFrame( () => document.getElementById( decodeURIComponent( hash ) )?.scrollIntoView({ behavior: 'smooth', block: 'start' }) )
+			}
 		},
 		
 		/** 

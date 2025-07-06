@@ -1,6 +1,6 @@
 {
   "name": "vue-tiny-router",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "type": "module",
   "description": "Hi! I'm a minimalist & lightweight vue3 router",
   "main": "src/index.js",
@@ -19,7 +19,15 @@
     "test": "vitest run",
     "build": "vite build",
     "size:check": "size-limit",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "example:dev": "cd example && pnpm run dev",
+    "example:build": "cd example && pnpm run build",
+    "example:preview": "cd example && pnpm run preview",
+    "docs:dev": "cd docs && pnpm run docs:dev",
+    "docs:build": "cd docs && pnpm run docs:build",
+    "docs:preview": "cd docs && pnpm run docs:preview",
+    "dev": "pnpm run example:dev",
+    "start": "pnpm run example:dev"
   },
   "repository": {
     "type": "git",
@@ -40,17 +48,17 @@
   "peerDependencies": {
     "vue": "^3.0.0"
   },
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.12.4",
   "devDependencies": {
     "@size-limit/preset-small-lib": "^11.2.0",
-    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitejs/plugin-vue": "^6.0.0",
     "@vue/test-utils": "^2.4.6",
     "gzip-size": "^7.0.0",
     "jsdom": "^26.1.0",
     "size-limit": "^11.2.0",
-    "terser": "^5.39.2",
-    "vite": "^6.3.5",
-    "vitest": "^3.1.4"
+    "terser": "^5.43.1",
+    "vite": "^7.0.2",
+    "vitest": "^3.2.4"
   },
   "size-limit": [
     {

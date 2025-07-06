@@ -153,6 +153,30 @@ Most common patterns work the same:
 | Route guards | Route guards ✅ |
 | Lazy loading | Lazy loading ✅ |
 
+[See full migration guide →](docs/migration/from-vue-router.md)
+
+## Example & Documentation
+
+### 🎯 Live Example
+```bash
+pnpm run dev
+```
+
+The example demonstrates all features including:
+- Route parameters
+- Route guards  
+- Anchor links
+- Memory mode
+- Redirects
+
+### 📚 Full Documentation
+```bash
+# Run the VitePress documentation
+pnpm run docs:dev
+```
+
+Or view online: [Vue Tiny Router Docs](https://github.com/Makio64/vue-tiny-router/tree/main/docs)
+
 ## Browser Support
 
 Works in all modern browsers that support ES6+ and the History API.
@@ -163,6 +187,21 @@ Keep it tiny! When contributing:
 - Maintain minimal bundle size
 - Ensure all tests pass
 - Follow the simple API design
+
+Run the full development setup:
+```bash
+# Run tests
+pnpm test
+
+# Check bundle size
+pnpm run size:check
+
+# Run example app
+pnpm run example:dev
+
+# Run documentation
+pnpm run docs:dev
+```
 
 ## License
 
