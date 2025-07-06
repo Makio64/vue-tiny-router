@@ -3,4 +3,7 @@ dist/
 *.log
 .DS_Store
 coverage/
+example/node_modules/
+docs/node_modules/
+docs/.vitepress/cache/
 .env
