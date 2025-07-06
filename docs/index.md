@@ -17,22 +17,22 @@ hero:
       link: /demo
 
 features:
-  - icon: 🤏
+  - icon: "•"
     title: Incredibly Small
     details: Only 1.02kb gzipped - perfect for performance-conscious applications
-  - icon: ⚡
+  - icon: "•"
     title: Lightning Fast
     details: Minimal overhead with maximum performance
-  - icon: 🎯
+  - icon: "•"
     title: Simple API
     details: Easy to learn and use, with an intuitive API design
-  - icon: 💪
+  - icon: "•"
     title: Feature Complete
     details: Route params, guards, lazy loading, redirects, anchor links, and more
-  - icon: 🔧
+  - icon: "•"
     title: Memory Mode
     details: Perfect for embedded apps or testing scenarios
-  - icon: 🚀
+  - icon: "•"
     title: Vue 3 Ready
     details: Built specifically for Vue 3 with modern JavaScript features
 ---
@@ -94,21 +94,21 @@ this.$router.push('/about')
 
 ## Why Vue Tiny Router?
 
-### 📦 Bundle Size Comparison
+### Bundle Size Comparison
 
 | Router | Bundle Size (gzipped) | Features |
 |--------|----------------------|----------|
 | vue-tiny-router | **1.02kb** | Route params, guards, lazy loading, redirects, anchor links, memory mode |
 | vue-router | ~34kb | Full-featured router with extensive API |
 
-### 🎯 Perfect For
+### Perfect For
 
 - **Performance-critical applications** where every byte counts
 - **Embedded Vue apps** within larger applications
 - **Simple to medium complexity** routing needs
 - **Projects** that need basic routing without the overhead
 
-### ✨ All Essential Features
+### Essential Features
 
 - ✅ Route parameters (`/user/:id`)
 - ✅ Route guards (`beforeRouteLeave`)

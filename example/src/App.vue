@@ -2,31 +2,16 @@
   <div id="app">
     <aside class="sidebar">
       <div class="logo">
-        <h1>🚀 Vue Tiny Router</h1>
+        <h1>Vue Tiny Router</h1>
         <p>Interactive Examples</p>
       </div>
       
       <nav class="nav">
-        <a href="/" class="nav-item" :class="{ active: $router.route === '/' }">
-          <span class="icon">🏠</span>
-          <span>Home</span>
-        </a>
-        <a href="/params" class="nav-item" :class="{ active: $router.route?.startsWith('/params') }">
-          <span class="icon">🎯</span>
-          <span>Route Parameters</span>
-        </a>
-        <a href="/guards" class="nav-item" :class="{ active: $router.route === '/guards' }">
-          <span class="icon">🔒</span>
-          <span>Route Guards</span>
-        </a>
-        <a href="/anchors" class="nav-item" :class="{ active: $router.route === '/anchors' }">
-          <span class="icon">⚓</span>
-          <span>Anchor Links</span>
-        </a>
-        <a href="/memory" class="nav-item" :class="{ active: $router.route === '/memory' }">
-          <span class="icon">🧠</span>
-          <span>Memory Mode</span>
-        </a>
+        <a href="/" class="nav-item" :class="{ active: $router.route === '/' }">Home</a>
+        <a href="/params" class="nav-item" :class="{ active: $router.route?.startsWith('/params') }">Route Parameters</a>
+        <a href="/guards" class="nav-item" :class="{ active: $router.route === '/guards' }">Route Guards</a>
+        <a href="/anchors" class="nav-item" :class="{ active: $router.route === '/anchors' }">Anchor Links</a>
+        <a href="/memory" class="nav-item" :class="{ active: $router.route === '/memory' }">Memory Mode</a>
       </nav>
     </aside>
 
@@ -122,10 +107,8 @@ body {
 }
 
 .nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
+  display: block;
+  padding: 0.5rem 0.75rem;
   margin-bottom: 0.5rem;
   text-decoration: none;
   color: #666;
@@ -145,10 +128,6 @@ body {
   border-left: 3px solid #4ade80;
 }
 
-.nav-item .icon {
-  font-size: 1.2rem;
-}
-
 /* Main content */
 .main-content {
   flex: 1;
@@ -158,7 +137,9 @@ body {
 
 /* Common styles */
 .container {
-  max-width: 800px;
+  width: 100%;
+  max-width: none;
+  padding: 0 1rem;
   margin: 0 auto;
 }
 
@@ -193,8 +174,8 @@ body {
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  gap: 0.3rem;
+  padding: 0.5rem 1rem;
   background: #4ade80;
   color: white;
   text-decoration: none;
@@ -203,7 +184,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin: 0.25rem 0.5rem 0.25rem 0;
 }
 

@@ -1,131 +1,54 @@
 <template>
   <div class="container">
     <div class="card">
-      <h1>Memory Mode</h1>
-      <p>Learn how to use memory mode for routing that doesn't affect the browser URL.</p>
+      <h1>Memory Mode Demo</h1>
+      <p>Navigate below: the browser URL stays unchanged.</p>
       
       <div class="section">
-        <h3>What is Memory Mode?</h3>
-        <p>Memory mode allows the router to maintain its own internal state without affecting the browser's URL or history. This is perfect for embedded applications, modals, or testing scenarios.</p>
-        
-        <div class="code-block">
-          <div class="code-line">&lt;TinyRouter :routes="routes" :memoryMode="true" /&gt;</div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Current Browser URL</h3>
+        <strong>Current Browser URL</strong>
         <div class="url-display">
           <strong>{{ currentUrl }}</strong>
         </div>
-        <p>Notice how this URL stays the same when you navigate in the memory router below.</p>
       </div>
 
       <div class="section">
-        <h3>When to Use Memory Mode</h3>
-        <div class="use-cases">
-          <div class="use-case">
-            <div class="use-case-icon">🧪</div>
-            <h4>Testing</h4>
-            <p>Perfect for unit tests where you don't want to affect the browser's history</p>
-          </div>
-          <div class="use-case">
-            <div class="use-case-icon">📱</div>
-            <h4>Embedded Apps</h4>
-            <p>When your Vue app is embedded in another application</p>
-          </div>
-          <div class="use-case">
-            <div class="use-case-icon">🎭</div>
-            <h4>Modals & Overlays</h4>
-            <p>For complex navigation within modals or overlay components</p>
-          </div>
-          <div class="use-case">
-            <div class="use-case-icon">📝</div>
-            <h4>Multi-step Forms</h4>
-            <p>Navigate through form steps without changing the main URL</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Memory Router Demo</h3>
-        <p>This is a separate router instance running in memory mode:</p>
+        <strong>Memory Router</strong>
         
         <div class="memory-router-container">
           <div class="memory-nav">
             <button @click="memoryRoute = '/'" :class="['memory-btn', memoryRoute === '/' ? 'active' : '']">
-              Memory Home
+              Home
             </button>
             <button @click="memoryRoute = '/about'" :class="['memory-btn', memoryRoute === '/about' ? 'active' : '']">
-              Memory About
+              About
             </button>
             <button @click="memoryRoute = '/contact'" :class="['memory-btn', memoryRoute === '/contact' ? 'active' : '']">
-              Memory Contact
+              Contact
             </button>
           </div>
           
           <div class="memory-content">
             <div class="memory-status">
-              <strong>Memory Router Route:</strong> {{ memoryRoute }}
+              <strong>Route:</strong> {{ memoryRoute }}
             </div>
             
             <div v-if="memoryRoute === '/'" class="memory-page">
-              <h4>🏠 Memory Home</h4>
-              <p>This is the home page of the memory router. Notice how the browser URL doesn't change when you navigate here.</p>
+              Home content (memory router)
             </div>
             
             <div v-if="memoryRoute === '/about'" class="memory-page">
-              <h4>ℹ️ Memory About</h4>
-              <p>This is the about page of the memory router. The navigation is completely independent of the main router.</p>
+              About content (memory router)
             </div>
             
             <div v-if="memoryRoute === '/contact'" class="memory-page">
-              <h4>📞 Memory Contact</h4>
-              <p>This is the contact page of the memory router. Perfect for embedded scenarios where you need isolated navigation.</p>
+              Contact content (memory router)
             </div>
           </div>
         </div>
       </div>
 
       <div class="section">
-        <h3>How It Works</h3>
-        <p>Memory mode routers maintain their own state without using the browser's history API:</p>
-        
-        <div class="comparison">
-          <div class="comparison-item">
-            <h4>Normal Mode</h4>
-            <ul>
-              <li>Updates browser URL</li>
-              <li>Affects browser history</li>
-              <li>Can use back/forward buttons</li>
-              <li>Shareable URLs</li>
-            </ul>
-          </div>
-          <div class="comparison-item">
-            <h4>Memory Mode</h4>
-            <ul>
-              <li>Internal state only</li>
-              <li>No history changes</li>
-              <li>Isolated navigation</li>
-              <li>Perfect for embedded apps</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Code Example</h3>
-        <div class="code-block">
-          <div class="code-line">// Regular router instance</div>
-          <div class="code-line">&lt;TinyRouter :routes="mainRoutes" /&gt;</div>
-          <div class="code-line"></div>
-          <div class="code-line">// Memory router instance</div>
-          <div class="code-line">&lt;TinyRouter :routes="memoryRoutes" :memoryMode="true" /&gt;</div>
-        </div>
-      </div>
-
-      <div class="section">
-        <button @click="$router.push('/')" class="btn">← Back to Home</button>
+        <button @click="$router.push('/')" class="btn">← Home</button>
       </div>
     </div>
   </div>
@@ -156,7 +79,7 @@ export default {
 
 <style scoped>
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .url-display {
@@ -171,35 +94,11 @@ export default {
   border-left: 4px solid #4ade80;
 }
 
-.use-cases {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
-.use-case {
-  padding: 1.5rem;
-  background: #f8fffe;
-  border-radius: 12px;
-  border: 1px solid #e8f5e8;
-  text-align: center;
-}
-
+.use-cases,
+.comparison,
+.code-block,
 .use-case-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.use-case h4 {
-  margin: 0 0 0.5rem 0;
-  color: #2d5a3d;
-}
-
-.use-case p {
-  margin: 0;
-  color: #666;
-  font-size: 0.9rem;
+  display: none;
 }
 
 .memory-router-container {

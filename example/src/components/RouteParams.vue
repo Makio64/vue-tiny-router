@@ -1,23 +1,11 @@
 <template>
   <div class="container">
     <div class="card">
-      <h1>Route Parameters</h1>
-      <p>Learn how to use dynamic route segments to capture values from the URL.</p>
+      <h1>Route Parameters Demo</h1>
+      <p>Select a user to update the route, then check the logged parameter value.</p>
       
       <div class="section">
-        <h3>What are Route Parameters?</h3>
-        <p>Route parameters allow you to capture dynamic segments from the URL. They're defined with a colon prefix like <code>:id</code>.</p>
-        
-        <div class="code-block">
-          <div class="code-line">const routes = [</div>
-          <div class="code-line">  { path: '/user/:id', component: UserProfile }</div>
-          <div class="code-line">]</div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Try It Out</h3>
-        <p>Click these buttons to navigate to different user profiles:</p>
+        <strong>Navigate:</strong>
         
         <div class="button-group">
           <button @click="$router.push('/user/123')" class="btn">User 123</button>
@@ -26,30 +14,8 @@
         </div>
         
         <div class="info-box">
-          <strong>Current Route:</strong> {{ $router.route || 'N/A' }}
+          <strong>Current params:</strong> {{ JSON.stringify($router.params) }}
         </div>
-      </div>
-
-      <div class="section">
-        <h3>How to Access Parameters</h3>
-        <p>In your component, access route parameters using <code>this.$router.params</code>:</p>
-        
-        <div class="code-block">
-          <div class="code-line">// In your component</div>
-          <div class="code-line">console.log(this.$router.params.id)</div>
-          <div class="code-line">// Returns: "123" for /user/123</div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Multiple Parameters</h3>
-        <p>You can have multiple parameters in a single route:</p>
-        
-        <div class="code-block">
-          <div class="code-line">{ path: '/user/:id/post/:postId', component: Post }</div>
-        </div>
-        
-        <p>Both <code>id</code> and <code>postId</code> would be available in <code>this.$router.params</code>.</p>
       </div>
     </div>
   </div>
@@ -62,8 +28,15 @@ export default {
 </script>
 
 <style scoped>
+/* Simplified layout */
 .section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Remove unused styles */
+.code-block,
+.code-line {
+  display: none;
 }
 
 .button-group {
