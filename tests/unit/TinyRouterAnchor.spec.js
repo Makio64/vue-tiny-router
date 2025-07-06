@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils'
 import { defineComponent, markRaw, nextTick } from 'vue'
 
 let scrollSpy
+let scrollSpyTop
 
 // Mock component containing anchor targets
 const Page = markRaw(defineComponent({
@@ -28,6 +29,10 @@ describe('TinyRouter – anchor support', () => {
     scrollSpy = vi.fn()
     Element.prototype.scrollIntoView = scrollSpy
 
+    // Spy on window.scrollTo for top scrolling
+    scrollSpyTop = vi.fn()
+    window.scrollTo = scrollSpyTop
+
     // Immediately execute any requestAnimationFrame callbacks
     vi.stubGlobal('requestAnimationFrame', (cb) => cb())
 
@@ -48,6 +53,8 @@ describe('TinyRouter – anchor support', () => {
   afterEach(() => {
     window.location = originalLocation
     window.history = originalHistory
+    // Cleanup spies
+    delete window.scrollTo
     vi.resetAllMocks()
   })
 
@@ -61,5 +68,17 @@ describe('TinyRouter – anchor support', () => {
     await nextTick()
 
     expect(scrollSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('scrolls to top when navigating to an empty hash (#)', async () => {
+    const routes = [{ path: '/', component: Page }]
+    const wrapper = mount(TinyRouter, { props: { routes }, attachTo: document.body })
+    await nextTick()
+
+    // trigger navigation to top
+    await wrapper.vm.push('/#')
+    await nextTick()
+
+    expect(scrollSpyTop).toHaveBeenCalledTimes(1)
   })
 }) 
