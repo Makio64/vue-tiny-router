@@ -130,7 +130,7 @@ body {
 
 /* Main content */
 .main-content {
-  flex: 1;
+  width: calc(100vw - 280px);
   padding: 2rem;
   overflow-y: auto;
 }
