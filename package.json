@@ -1,6 +1,6 @@
 {
   "name": "vue-tiny-router",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "type": "module",
   "description": "Hi! I'm a minimalist & lightweight vue3 router",
   "main": "src/index.js",
