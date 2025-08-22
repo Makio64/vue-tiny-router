@@ -324,6 +324,338 @@ describe('TinyRouter', () => {
     expect(wrapper.text()).toBe('ID: 2')
   })
 
+  describe('Parameterized Route Pattern Tests', () => {
+    it('correctly matches /user/:id pattern', async () => {
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/user/:id', component: User }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test various user IDs
+      const testCases = [
+        { path: '/user/123', expectedParams: { id: '123' } },
+        { path: '/user/abc', expectedParams: { id: 'abc' } },
+        { path: '/user/test-user', expectedParams: { id: 'test-user' } },
+        { path: '/user/user_1', expectedParams: { id: 'user_1' } }
+      ]
+      
+      for (const { path, expectedParams } of testCases) {
+        await wrapper.vm.push(path)
+        await nextTick()
+        
+        expect(wrapper.findComponent(User).exists()).toBe(true)
+        expect(wrapper.vm.route).toBe(path)
+        expect(wrapper.vm.routeParams).toEqual(expectedParams)
+      }
+    })
+
+    it('correctly matches /:id pattern at root level', async () => {
+      const routes = [
+        { path: '/:id', component: User }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test various IDs at root level
+      const testCases = [
+        { path: '/123', expectedParams: { id: '123' } },
+        { path: '/about', expectedParams: { id: 'about' } },
+        { path: '/test-page', expectedParams: { id: 'test-page' } }
+      ]
+      
+      for (const { path, expectedParams } of testCases) {
+        await wrapper.vm.push(path)
+        await nextTick()
+        
+        expect(wrapper.findComponent(User).exists()).toBe(true)
+        expect(wrapper.vm.route).toBe(path)
+        expect(wrapper.vm.routeParams).toEqual(expectedParams)
+      }
+    })
+
+    it('matches / path with ONLY /:id pattern defined (no explicit / route)', async () => {
+      const routes = [
+        { path: '/:id', component: User }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test / - should match User with empty id parameter
+      await wrapper.vm.push('/')
+      await nextTick()
+      
+      expect(wrapper.findComponent(User).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/')
+      expect(wrapper.vm.routeParams).toEqual({ id: '' })
+      
+      // Test /something - should still match User with params
+      await wrapper.vm.push('/something')
+      await nextTick()
+      
+      expect(wrapper.findComponent(User).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/something')
+      expect(wrapper.vm.routeParams).toEqual({ id: 'something' })
+    })
+
+    it('matches /user and /user/ when ONLY /user/:id pattern is defined', async () => {
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/user/:id', component: User }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test /user without params - should match User with empty id
+      await wrapper.vm.push('/user')
+      await nextTick()
+      
+      expect(wrapper.findComponent(User).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user')
+      expect(wrapper.vm.routeParams).toEqual({ id: '' })
+      
+      // Test /user/ with trailing slash - should match User with empty id
+      await wrapper.vm.push('/user/')
+      await nextTick()
+      
+      expect(wrapper.findComponent(User).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user/')
+      expect(wrapper.vm.routeParams).toEqual({ id: '' })
+      
+      // Test /user/123 - should match User with params
+      await wrapper.vm.push('/user/123')
+      await nextTick()
+      
+      expect(wrapper.findComponent(User).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user/123')
+      expect(wrapper.vm.routeParams).toEqual({ id: '123' })
+    })
+
+    it('prioritizes exact match /user over /user/:id when both are defined', async () => {
+      const UserList = markRaw(defineComponent({
+        template: '<div>User List</div>',
+        name: 'UserList'
+      }))
+      
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/user', component: UserList },
+        { path: '/user/:id', component: User }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test /user without params - should match UserList (exact match)
+      await wrapper.vm.push('/user')
+      await nextTick()
+      
+      expect(wrapper.findComponent(UserList).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user')
+      expect(wrapper.vm.routeParams).toEqual({})
+      
+      // Test /user/123 - should match User with params
+      await wrapper.vm.push('/user/123')
+      await nextTick()
+      
+      expect(wrapper.findComponent(User).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user/123')
+      expect(wrapper.vm.routeParams).toEqual({ id: '123' })
+    })
+
+    it('matches / path when /:id pattern is also defined', async () => {
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/:id', component: User }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test / - should match Home
+      await wrapper.vm.push('/')
+      await nextTick()
+      
+      expect(wrapper.findComponent(Home).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/')
+      expect(wrapper.vm.routeParams).toEqual({})
+      
+      // Test /something - should match User with params
+      await wrapper.vm.push('/something')
+      await nextTick()
+      
+      expect(wrapper.findComponent(User).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/something')
+      expect(wrapper.vm.routeParams).toEqual({ id: 'something' })
+    })
+
+    it('prioritizes exact matches over parameterized routes', async () => {
+      const About = markRaw(defineComponent({
+        template: '<div>About Page</div>',
+        name: 'About'
+      }))
+      
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/about', component: About },
+        { path: '/:id', component: User }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test /about - should match About (exact match)
+      await wrapper.vm.push('/about')
+      await nextTick()
+      
+      expect(wrapper.findComponent(About).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/about')
+      expect(wrapper.vm.routeParams).toEqual({})
+      
+      // Test /other - should match User (parameterized route)
+      await wrapper.vm.push('/other')
+      await nextTick()
+      
+      expect(wrapper.findComponent(User).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/other')
+      expect(wrapper.vm.routeParams).toEqual({ id: 'other' })
+    })
+
+    it('does not match /user/:id pattern for paths with extra segments', async () => {
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/user/:id', component: User }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test /user/123/profile - should NOT match /user/:id
+      await wrapper.vm.push('/user/123/profile')
+      await nextTick()
+      
+      // Should fallback to first route (Home) since no match
+      expect(wrapper.findComponent(Home).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user/123/profile')
+    })
+
+    it('handles multiple parameters in a single route', async () => {
+      const Post = markRaw(defineComponent({
+        template: '<div>User: {{ routeParams.userId }}, Post: {{ routeParams.postId }}</div>',
+        props: ['routeParams'],
+        name: 'Post'
+      }))
+      
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/user/:userId/post/:postId', component: Post }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      await wrapper.vm.push('/user/john/post/42')
+      await nextTick()
+      
+      expect(wrapper.findComponent(Post).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user/john/post/42')
+      expect(wrapper.vm.routeParams).toEqual({ userId: 'john', postId: '42' })
+    })
+
+    it('matches routes with optional parameters at the end', async () => {
+      const Post = markRaw(defineComponent({
+        template: '<div>User: {{ routeParams.userId || "(empty)" }}, Post: {{ routeParams.postId || "(empty)" }}</div>',
+        props: ['routeParams'],
+        name: 'Post'
+      }))
+      
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/user/:userId/post/:postId', component: Post }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test with both params
+      await wrapper.vm.push('/user/john/post/42')
+      await nextTick()
+      
+      expect(wrapper.findComponent(Post).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user/john/post/42')
+      expect(wrapper.vm.routeParams).toEqual({ userId: 'john', postId: '42' })
+      
+      // Test without last param - should match with empty postId
+      await wrapper.vm.push('/user/john/post')
+      await nextTick()
+      
+      expect(wrapper.findComponent(Post).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user/john/post')
+      expect(wrapper.vm.routeParams).toEqual({ userId: 'john', postId: '' })
+      
+      // Test with trailing slash
+      await wrapper.vm.push('/user/john/post/')
+      await nextTick()
+      
+      expect(wrapper.findComponent(Post).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/user/john/post/')
+      expect(wrapper.vm.routeParams).toEqual({ userId: 'john', postId: '' })
+    })
+
+    it('matches deeply nested routes with optional params', async () => {
+      const Category = markRaw(defineComponent({
+        template: '<div>Category: {{ routeParams.category }}, Subcategory: {{ routeParams.subcategory }}, Item: {{ routeParams.item }}</div>',
+        props: ['routeParams'],
+        name: 'Category'
+      }))
+      
+      const routes = [
+        { path: '/shop/:category/:subcategory/:item', component: Category }
+      ]
+      
+      const wrapper = mount(TinyRouter, {
+        props: { routes }
+      })
+      
+      // Test with all params
+      await wrapper.vm.push('/shop/electronics/phones/iphone')
+      await nextTick()
+      
+      expect(wrapper.findComponent(Category).exists()).toBe(true)
+      expect(wrapper.vm.routeParams).toEqual({ 
+        category: 'electronics', 
+        subcategory: 'phones', 
+        item: 'iphone' 
+      })
+      
+      // Test without last param
+      await wrapper.vm.push('/shop/electronics/phones')
+      await nextTick()
+      
+      expect(wrapper.findComponent(Category).exists()).toBe(true)
+      expect(wrapper.vm.routeParams).toEqual({ 
+        category: 'electronics', 
+        subcategory: 'phones', 
+        item: '' 
+      })
+    })
+  })
+
   describe('Navigation Interception', () => {
     let TinyRouterFresh
     let mockNavigation

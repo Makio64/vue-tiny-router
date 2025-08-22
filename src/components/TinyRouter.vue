@@ -27,15 +27,21 @@ const findMatch = ( path, routes, redirects ) => {
 
 	for ( const route of routes ) {
 		const paramNames = []
-		const regex = new RegExp( '^' + route.path.replace( /:([^/]+)/g, ( _, name ) => {
+		let pattern = route.path.replace( /:([^/]+)/g, ( _, name ) => {
 			paramNames.push( name )
-			return '([^/]+)'
-		} ) + '$' )
-		const match = resolved.match( regex )
-
+			return '([^/]*)'
+		} )
+		
+		// Make last segment optional if it has a param
+		if ( /:[^/]+$/.test( route.path ) ) {
+			const i = pattern.lastIndexOf( '/([^/]*)' )
+			if ( i > 0 ) pattern = pattern.slice( 0, i ) + '(?:' + pattern.slice( i ) + ')?'
+		}
+		
+		const match = resolved.match( new RegExp( '^' + pattern + '/?$' ) )
 		if ( match ) {
 			const params = paramNames.reduce( ( acc, name, i ) => {
-				acc[name] = match[i + 1]
+				acc[name] = match[i + 1] || ''
 				return acc
 			}, {} )
 			return { route, params, resolved }
@@ -91,8 +97,16 @@ const TinyRouter = {
 			this.route = path
 			// Anchor support – if the path contains a hash, scroll to the element with the corresponding id
 			if ( typeof document !== 'undefined' ) {
-				const hash = path.split( '#' )[1]
-				if ( hash ) requestAnimationFrame( () => document.getElementById( decodeURIComponent( hash ) )?.scrollIntoView({ behavior: 'smooth', block: 'start' }) )
+				const hashParts = path.split( '#' )
+				if ( hashParts.length > 1 ) {
+					const hash = hashParts[1]
+					if ( hash ) {
+						requestAnimationFrame( () => document.getElementById( decodeURIComponent( hash ) )?.scrollIntoView({ behavior: 'smooth', block: 'start' }) )
+					} else {
+						// Empty hash - scroll to top
+						requestAnimationFrame( () => window.scrollTo({ top: 0, behavior: 'smooth' }) )
+					}
+				}
 			}
 		},
 		
