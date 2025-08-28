@@ -46,6 +46,7 @@ describe('TinyRouter', () => {
   // Mock window.location and history
   const originalLocation = window.location
   const originalHistory = window.history
+  let warnSpy
 
   beforeEach(() => {
     // Reset refs between tests
@@ -64,12 +65,15 @@ describe('TinyRouter', () => {
       forward: vi.fn(),
       go: vi.fn()
     }
+
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
   })
 
   afterEach(() => {
     window.location = originalLocation
     window.history = originalHistory
     vi.resetAllMocks()
+    warnSpy?.mockRestore()
   })
 
   it('renders the default route component', async () => {
@@ -179,6 +183,22 @@ describe('TinyRouter', () => {
     //console.log('Fallback route, reached:', wrapper.vm.route)
     // Should fall back to the first route component
     expect(wrapper.findComponent(Home).exists()).toBe(true)
+    expect(warnSpy).toHaveBeenCalledWith('Route "/does-not-exist" not found')
+  })
+
+  it('supports wildcard catch-all routes', async () => {
+    const routes = [
+      { path: '/', component: Home },
+      { path: '/*', component: NotFound }
+    ]
+
+    const wrapper = mount(TinyRouter, { props: { routes } })
+    await nextTick()
+
+    await wrapper.vm.push('/unknown/path')
+    await nextTick()
+
+    expect(wrapper.findComponent(NotFound).exists()).toBe(true)
   })
 
   it('respects defaultRoute when provided', async () => {

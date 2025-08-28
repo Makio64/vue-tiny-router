@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "Vue Tiny Router"
   text: "Lightweight Vue 3 Router"
-  tagline: "Only 1kb gzipped with all the features you need"
+  tagline: "Only ~1.25 kB Brotli with all the features you need"
   actions:
     - theme: brand
       text: Get Started
@@ -19,7 +19,7 @@ hero:
 features:
   - icon: "•"
     title: Incredibly Small
-    details: Only 1.02kb gzipped - perfect for performance-conscious applications
+    details: Only ~1.25 kB Brotli - perfect for performance-conscious applications
   - icon: "•"
     title: Lightning Fast
     details: Minimal overhead with maximum performance
@@ -96,7 +96,7 @@ this.$router.push('/about')
 
 ### Bundle Size Comparison
 
-| Router | Bundle Size (gzipped) | Features |
+| Router | Bundle Size (Brotli) | Features |
 |--------|----------------------|----------|
 | vue-tiny-router | **1.02kb** | Route params, guards, lazy loading, redirects, anchor links, memory mode |
 | vue-router | ~34kb | Full-featured router with extensive API |

@@ -1,10 +1,12 @@
 # vue-tiny-router
 
-A lightweight Vue 3 router. **Only 1kb gzipped** with all the features you need.
+[![CI](https://github.com/Makio64/vue-tiny-router/actions/workflows/ci.yml/badge.svg)](https://github.com/Makio64/vue-tiny-router/actions/workflows/ci.yml)
+
+A lightweight Vue 3 router. **~1.25 kB Brotli** with all the features you need.
 
 ## Why vue-tiny-router?
 
-- 🤏 **Tiny**: 1.02kb gzipped
+- 🤏 **Tiny**: ~1.25 kB Brotli
 - ⚡ **Fast**: Minimal overhead, maximum performance
 - 🎯 **Simple**: Easy setup, intuitive API
 - 💪 **Complete**: Route params, guards, lazy loading, redirects
@@ -66,6 +68,33 @@ export default {
 </template>
 ```
 
+### 5. Composition API (setup)
+
+Use the provided composables in `<script setup>` or setup():
+
+```vue
+<script setup>
+import { TinyRouter, useRouter, useRoute } from 'vue-tiny-router'
+
+const router = useRouter()
+const route = useRoute()
+
+function goUser(id) {
+  router.push(`/profile/${id}`)
+}
+</script>
+
+<template>
+  <TinyRouter :routes="routes" />
+  <div>Current: {{ route.route }}</div>
+  <div>User id: {{ route.params.id }}</div>
+  <button @click="goUser('42')">Go user 42</button>
+  <button @click="router.push('/')">Home</button>
+  <button @click="router.push('/profile/123')">Profile</button>
+  
+</template>
+```
+
 That's it! 🎉
 
 ## API Reference
@@ -74,6 +103,16 @@ That's it! 🎉
 - `$router.push(path)` - Navigate to a route
 - `$router.route` - Current route path
 - `$router.params` - Route parameters object
+
+### Composables
+- `useRouter()` - Returns an object with:
+  - `push(path)` - Navigate programmatically
+  - `route` - Reactive current path string
+  - `params` - Reactive params object
+  - `component` - Current matched component (non-reactive reference)
+- `useRoute()` - Returns an object with:
+  - `route` - Reactive current path string
+  - `params` - Reactive params object
 
 ### Component Props
 ```js
@@ -180,6 +219,18 @@ Or view online: [Vue Tiny Router Docs](https://github.com/Makio64/vue-tiny-route
 ## Browser Support
 
 Works in all modern browsers that support ES6+ and the History API.
+
+## Limitations
+
+This library is intentionally tiny and focuses on the 80% use cases:
+- No nested routes or child routes
+- No named routes or route names
+- No history mode configuration (uses browser History API when not in memory mode)
+- No automatic query parsing (query string is appended as-is; parse it in your component if needed)
+- No route metadata or per-route guards (supports component-level `beforeRouteLeave` only)
+- No SSR integration
+
+If you need these features, consider using `vue-router`.
 
 ## Contributing
 

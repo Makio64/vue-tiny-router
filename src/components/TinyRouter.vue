@@ -20,14 +20,30 @@ export const initialRoute = ref( window?.location.pathname )
 /** Initial query params when app started */
 export const initialQuery = ref( window?.location.search )
 
+/**
+ * Minimal reactive route state for Composition API consumers
+ */
+export const routeState = ref( { route: ( ( initialRoute.value || '' ) + ( initialQuery.value || '' ) ), params: {} } )
+
 const findMatch = ( path, routes, redirects ) => {
 	const pathOnly = path.split( '#' )[0].split( '?' )[0]
 	const resolved = redirects[pathOnly] || pathOnly
 	if ( !resolved ) return { route: null, params: {}, resolved: pathOnly }
 
+	// Check exact matches first (higher priority)
+	const exactMatch = routes.find( r =>  r.path === resolved || r.path === resolved + '/' || r.path + '/' === resolved )
+	if ( exactMatch ) return { route: exactMatch, params: {}, resolved }
+
+	// Check parameterized and wildcard routes
 	for ( const route of routes ) {
 		const paramNames = []
-		let pattern = route.path.replace( /:([^/]+)/g, ( _, name ) => {
+		// Build pattern from the original route path in a safe order to avoid
+		// touching generated tokens like "([^/]*)"
+		let pattern = route.path
+		// Support wildcard catch-all (e.g., /* or /user/*)
+		if ( pattern.includes( '*' ) ) pattern = pattern.replace( /\*+/g, '.*' )
+		// Replace params AFTER wildcard processing
+		pattern = pattern.replace( /:([^/]+)/g, ( _, name ) => {
 			paramNames.push( name )
 			return '([^/]*)'
 		} )
@@ -77,6 +93,7 @@ const TinyRouter = {
 		currentComponent() {
 			const { route, params, resolved } = findMatch( this.route, this.routes, this.redirects )
 			this.routeParams = params
+			routeState.value.params = params
 			if ( !route ) console.warn( `Route "${resolved}" not found` )
 			return route ? route.component : this.routes[0].component
 		}
@@ -86,15 +103,19 @@ const TinyRouter = {
 		if( !this.memoryMode ) window?.addEventListener( 'popstate', () => this.push( window?.location.pathname, true ) )
 		this.push( ( defaultRoute.value || initialRoute.value ) + initialQuery.value )
 	},
+	unmounted() {
+		if ( this.__onPop ) window?.removeEventListener( 'popstate', this.__onPop )
+		if ( this.__onNavigate ) navigation?.removeEventListener( 'navigate', this.__onNavigate )
+	},
 	methods: {
 		proceed( path, isPop = false ) {
 			if ( !isPop ) {
 				isNavigatingProgrammatically = true
 				setTimeout( () => { isNavigatingProgrammatically = false }, 0 )
-				if ( this.memoryMode ) this.push( path, true )
-				else history.pushState( null, '', path )
+				if ( !this.memoryMode ) history.pushState( null, '', path )
 			}
 			this.route = path
+			routeState.value.route = path
 			// Anchor support – if the path contains a hash, scroll to the element with the corresponding id
 			if ( typeof document !== 'undefined' ) {
 				const hashParts = path.split( '#' )
@@ -171,4 +192,22 @@ export const TinyRouterInstall = {
 		}
 	}
 }
+
+/**
+ * Programmatic navigation and state for Composition API
+ */
+export const useRouter = () => ( {
+    push( path ) { TinyRouterInstance?.push( path ) },
+    get route() { return routeState.value.route },
+    get params() { return routeState.value.params },
+    get component() { return TinyRouterInstance?.currentComponent }
+} )
+
+/**
+ * Reactive route state for Composition API
+ */
+export const useRoute = () => ( {
+    get route() { return routeState.value.route },
+    get params() { return routeState.value.params }
+} )
 </script>

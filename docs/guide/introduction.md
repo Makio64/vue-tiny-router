@@ -5,7 +5,7 @@ editLink: true
 
 # What is Vue Tiny Router?
 
-`vue-tiny-router` is a minimalist, lightweight, and fast routing solution for Vue 3 applications. It was built with a simple goal: to provide all the essential routing features you need in the smallest possible package. At just **1.02kb gzipped**, it offers a powerful alternative to more complex solutions without sacrificing core functionality.
+`vue-tiny-router` is a minimalist, lightweight, and fast routing solution for Vue 3 applications. It was built with a simple goal: to provide all the essential routing features you need in the smallest possible package. At just **~1.25 kB (Brotli)**, it offers a powerful alternative to more complex solutions without sacrificing core functionality.
 
 ## Why Choose Vue Tiny Router?
 
@@ -44,7 +44,7 @@ Here's how `vue-tiny-router` stacks up against `vue-router`:
 
 | Aspect | vue-tiny-router | vue-router |
 | :--- | :--- | :--- |
-| **Bundle Size** | **~1kb gzipped** | ~8kb gzipped |
+| **Bundle Size** | **~1.25 kB (Brotli)** | ~8 kB gzipped |
 | **API Complexity** | Simple & intuitive | Comprehensive & powerful |
 | **Setup Time** | < 1 minute | A few minutes |
 | **Core Features** | All essentials included | Extensive feature set |

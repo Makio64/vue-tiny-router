@@ -108,7 +108,7 @@ export default {
     <div class="features">
       <h3>Features</h3>
       <ul>
-        <li>Only 1kb gzipped</li>
+        <li>Only ~1.25 kB (Brotli)</li>
         <li>Route parameters</li>
         <li>Route guards</li>
         <li>Lazy loading</li>

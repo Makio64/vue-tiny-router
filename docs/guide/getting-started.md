@@ -1,6 +1,6 @@
 # Getting Started
 
-Vue Tiny Router is a lightweight Vue 3 router that provides all the essential routing features you need in just 1kb gzipped.
+Vue Tiny Router is a lightweight Vue 3 router that provides all the essential routing features you need in just ~1.25 kB (Brotli).
 
 ## Installation
 
@@ -118,7 +118,27 @@ this.$router.push('/#section')
 ```
 
 ### Accessing Route Information
+## Composition API Usage
 
+You can use the router from `<script setup>` or `setup()` via composables.
+
+```vue
+<script setup>
+import { TinyRouter, useRouter, useRoute } from 'vue-tiny-router'
+
+const router = useRouter()
+const route = useRoute()
+</script>
+
+<template>
+  <TinyRouter :routes="routes" />
+  <p>Current route: {{ route.route }}</p>
+  <p>Params: {{ JSON.stringify(route.params) }}</p>
+  <button @click="router.push('/about')">Go About</button>
+</template>
+```
+
+### Option API
 ```javascript
 // Get current route path
 console.log(this.$router.route) // '/user/123'

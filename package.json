@@ -1,21 +1,24 @@
 {
   "name": "vue-tiny-router",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "type": "module",
   "description": "Hi! I'm a minimalist & lightweight vue3 router",
   "main": "src/index.js",
   "module": "src/index.js",
   "exports": {
     ".": {
-      "import": "./src/index.js"
+      "import": "./src/index.js",
+      "types": "./index.d.ts"
     }
   },
+  "types": "index.d.ts",
   "files": [
     "src",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
+    "lint": "eslint . --ignore-pattern tests/**/*.spec.js --ignore-pattern **/*.spec.js --fix",
     "test": "vitest run",
     "build": "vite build",
     "size:check": "size-limit",
@@ -50,6 +53,8 @@
   },
   "packageManager": "pnpm@10.15.0",
   "devDependencies": {
+    "eslint": "^9.34.0",
+    "eslint-plugin-vue": "^10.4.0",
     "@size-limit/preset-small-lib": "^11.2.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/test-utils": "^2.4.6",
@@ -64,8 +69,8 @@
     {
       "name": "vue-tiny-router (ES Module)",
       "path": "dist/index.js",
-      "limit": "1.2 KB",
-      "gzip": true
+      "limit": "1.3 KB",
+      "brotli": true
     }
   ]
 }

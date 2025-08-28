@@ -239,7 +239,9 @@ import {
   TinyRouterInstall,   // Vue plugin installer
   defaultRoute,        // Reactive ref for default route
   initialRoute,        // Reactive ref for initial route
-  initialQuery         // Reactive ref for initial query
+  initialQuery,        // Reactive ref for initial query
+  useRouter,           // Composition API: programmatic navigation + state
+  useRoute             // Composition API: reactive route state
 } from 'vue-tiny-router'
 ```
 
@@ -248,6 +250,47 @@ import {
 ```javascript
 import TinyRouter from 'vue-tiny-router'
 // Same as importing { TinyRouter }
+```
+
+## Composables (Composition API)
+
+Use these helpers inside `setup()` or `<script setup>` to access router state and navigate programmatically with a tiny API.
+
+### `useRouter()`
+- Returns an object with:
+  - `push(path: string)` → navigate to a new route
+  - `route: string` → reactive current path
+  - `params: Record<string,string>` → reactive params
+  - `component` → current matched component (non-reactive reference)
+
+Example:
+
+```vue
+<script setup>
+import { useRouter } from 'vue-tiny-router'
+const router = useRouter()
+router.push('/about')
+</script>
+```
+
+### `useRoute()`
+- Returns an object with:
+  - `route: string` → reactive current path
+  - `params: Record<string,string>` → reactive params
+
+Example:
+
+```vue
+<script setup>
+import { useRoute } from 'vue-tiny-router'
+const route = useRoute()
+</script>
+
+<template>
+  <div>Now at: {{ route.route }}</div>
+  <div>User id: {{ route.params.id }}</div>
+  <TinyRouter :routes="routes" />
+</template>
 ```
 
 ## Reactive Configuration
