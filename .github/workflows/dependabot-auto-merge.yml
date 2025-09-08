@@ -1,0 +1,85 @@
+name: Dependabot Auto-Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request')
+    steps:
+      - name: Get PR number from workflow run
+        if: github.event_name == 'workflow_run'
+        id: pr_number
+        run: |
+          PR_NUMBER=$(echo "${{ github.event.workflow_run.head_branch }}" | grep -o '[0-9]*' | head -1)
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+      
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      
+      - name: Check if all CI checks passed
+        id: check_status
+        run: |
+          PR_URL="${{ github.event.pull_request.html_url || format('https://github.com/{0}/pull/{1}', github.repository, steps.pr_number.outputs.pr_number) }}"
+          # Wait for checks to complete (max 5 minutes)
+          for i in {1..30}; do
+            CHECK_STATUS=$(gh pr checks "$PR_URL" --json state,conclusion | jq -r '.[] | select(.state=="COMPLETED") | .conclusion' | sort -u)
+            PENDING=$(gh pr checks "$PR_URL" --json state | jq -r '.[] | select(.state!="COMPLETED")' | wc -l)
+            
+            if [ "$PENDING" -eq "0" ]; then
+              if echo "$CHECK_STATUS" | grep -qE "FAILURE|CANCELLED|TIMED_OUT|ACTION_REQUIRED"; then
+                echo "checks_passed=false" >> $GITHUB_OUTPUT
+                echo "CI checks failed"
+                exit 1
+              else
+                echo "checks_passed=true" >> $GITHUB_OUTPUT
+                echo "All CI checks passed"
+                break
+              fi
+            fi
+            
+            if [ $i -eq 30 ]; then
+              echo "Timeout waiting for checks"
+              exit 1
+            fi
+            
+            echo "Waiting for checks to complete... ($PENDING pending)"
+            sleep 10
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Approve patch and minor updates
+        if: |
+          steps.check_status.outputs.checks_passed == 'true' &&
+          (steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch')
+        run: |
+          PR_URL="${{ github.event.pull_request.html_url || format('https://github.com/{0}/pull/{1}', github.repository, steps.pr_number.outputs.pr_number) }}"
+          gh pr review "$PR_URL" --approve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Enable auto-merge for Dependabot PRs
+        if: |
+          steps.check_status.outputs.checks_passed == 'true' &&
+          (steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch')
+        run: |
+          PR_URL="${{ github.event.pull_request.html_url || format('https://github.com/{0}/pull/{1}', github.repository, steps.pr_number.outputs.pr_number) }}"
+          gh pr merge --auto --merge "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
