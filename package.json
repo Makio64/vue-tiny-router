@@ -74,6 +74,6 @@
     }
   ],
   "dependencies": {
-    "@stylistic/eslint-plugin": "^5.2.3"
+    "@stylistic/eslint-plugin": "^5.3.1"
   }
 }
