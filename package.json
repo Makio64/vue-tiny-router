@@ -59,7 +59,7 @@
     "eslint": "^9.35.0",
     "eslint-plugin-vue": "^10.4.0",
     "gzip-size": "^7.0.0",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.0.0",
     "size-limit": "^11.2.0",
     "terser": "^5.44.0",
     "vite": "^7.1.5",
