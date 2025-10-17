@@ -16,7 +16,7 @@
     </aside>
 
     <main class="main-content">
-      <TinyRouter :routes="routes" :redirects="redirects" :scroll-smooth="false"/>
+      <TinyRouter :routes="routes" :redirects="redirects" :smoothScroll="false"/>
     </main>
   </div>
 </template>
