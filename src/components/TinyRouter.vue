@@ -124,6 +124,7 @@ const TinyRouter = {
       routeState.value.route = path
 
       if ( typeof document !== 'undefined' ) {
+        if ( !this.__didFirstNav ) { this.__didFirstNav = true; return }
         const [, hash = '' ] = path.split('#')
         const behavior = this.scrollSmooth ? 'smooth' : 'auto'
         requestAnimationFrame( () => {
@@ -135,6 +136,7 @@ const TinyRouter = {
         } )
       }
     },
+
 
     /**
      * Navigate to a new route
