@@ -12,7 +12,8 @@ export interface RedirectsMap {
 export interface TinyRouterProps {
   routes: Route[]
   redirects?: RedirectsMap
-  memoryMode?: boolean
+  memoryMode?: boolean,
+  scrollSmooth?: boolean
 }
 
 export interface RouterAPI {

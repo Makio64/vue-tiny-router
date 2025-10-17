@@ -2,7 +2,7 @@
   <div class="memory-home">
     <h3>🏠 Memory Router Home</h3>
     <p>This is the home page of the memory router. Notice how the browser URL doesn't change!</p>
-    
+
     <div class="memory-nav">
       <button @click="navigate('/about')" class="btn btn-secondary">
         Go to Memory About
@@ -10,7 +10,7 @@
       <span class="separator">|</span>
       <span class="current-route">Current: {{ currentRoute }}</span>
     </div>
-    
+
     <div class="info">
       <p>🧠 This router operates in memory mode - it doesn't affect the browser's history or URL.</p>
     </div>
@@ -81,4 +81,4 @@ export default {
   font-size: 0.9rem;
   color: #2c3e50;
 }
-</style> 
+</style>
