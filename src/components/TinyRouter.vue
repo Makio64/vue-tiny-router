@@ -1,9 +1,9 @@
 <template>
-  <component :is="currentComponent" ref="activeView" :key="route" :route-params="routeParams"/>
+  <component :is="currentComponent" ref="activeView" :key="route" :route-params="routeParams" />
 </template>
 
 <script>
-import {ref} from 'vue'
+import { ref } from 'vue'
 
 let TinyRouterInstance
 let isNavigatingProgrammatically = false
@@ -12,59 +12,59 @@ let isNavigatingProgrammatically = false
  * Default route to redirect to on app start
  * @example defaultRoute.value = '/home'
  */
-export const defaultRoute = ref(null)
+export const defaultRoute = ref( null )
 
 /** Initial route when app started */
-export const initialRoute = ref(window?.location.pathname)
+export const initialRoute = ref( window?.location.pathname )
 
 /** Initial query params when app started */
-export const initialQuery = ref(window?.location.search)
+export const initialQuery = ref( window?.location.search )
 
 /**
  * Minimal reactive route state for Composition API consumers
  */
-export const routeState = ref({route: ((initialRoute.value || '') + (initialQuery.value || '')), params: {}})
+export const routeState = ref( { route: ( ( initialRoute.value || '' ) + ( initialQuery.value || '' ) ), params: {} } )
 
-const findMatch = (path, routes, redirects) => {
-  const pathOnly = path.split('#')[0].split('?')[0]
+const findMatch = ( path, routes, redirects ) => {
+  const pathOnly = path.split( '#' )[0].split( '?' )[0]
   const resolved = redirects[pathOnly] || pathOnly
-  if (!resolved) return {route: null, params: {}, resolved: pathOnly}
+  if ( !resolved ) return { route: null, params: {}, resolved: pathOnly }
 
   // Check exact matches first (higher priority)
-  const exactMatch = routes.find(r => r.path === resolved || r.path === resolved + '/' || r.path + '/' === resolved)
-  if (exactMatch) return {route: exactMatch, params: {}, resolved}
+  const exactMatch = routes.find( r =>  r.path === resolved || r.path === resolved + '/' || r.path + '/' === resolved )
+  if ( exactMatch ) return { route: exactMatch, params: {}, resolved }
 
   // Check parameterized and wildcard routes
-  for (const route of routes) {
+  for ( const route of routes ) {
     const paramNames = []
     // Build pattern from the original route path in a safe order to avoid
     // touching generated tokens like "([^/]*)"
     let pattern = route.path
     // Support wildcard catch-all (e.g., /* or /user/*)
-    if (pattern.includes('*')) pattern = pattern.replace(/\*+/g, '.*')
+    if ( pattern.includes( '*' ) ) pattern = pattern.replace( /\*+/g, '.*' )
     // Replace params AFTER wildcard processing
-    pattern = pattern.replace(/:([^/]+)/g, (_, name) => {
-      paramNames.push(name)
+    pattern = pattern.replace( /:([^/]+)/g, ( _, name ) => {
+      paramNames.push( name )
       return '([^/]*)'
-    })
+    } )
 
     // Make last segment optional if it has a param
-    if (/:[^/]+$/.test(route.path)) {
-      const i = pattern.lastIndexOf('/([^/]*)')
-      if (i > 0) pattern = pattern.slice(0, i) + '(?:' + pattern.slice(i) + ')?'
+    if ( /:[^/]+$/.test( route.path ) ) {
+      const i = pattern.lastIndexOf( '/([^/]*)' )
+      if ( i > 0 ) pattern = pattern.slice( 0, i ) + '(?:' + pattern.slice( i ) + ')?'
     }
 
-    const match = resolved.match(new RegExp('^' + pattern + '/?$'))
-    if (match) {
-      const params = paramNames.reduce((acc, name, i) => {
+    const match = resolved.match( new RegExp( '^' + pattern + '/?$' ) )
+    if ( match ) {
+      const params = paramNames.reduce( ( acc, name, i ) => {
         acc[name] = match[i + 1] || ''
         return acc
-      }, {})
-      return {route, params, resolved}
+      }, {} )
+      return { route, params, resolved }
     }
   }
 
-  return {route: null, params: {}, resolved}
+  return { route: null, params: {}, resolved }
 }
 
 const TinyRouter = {
@@ -114,29 +114,30 @@ const TinyRouter = {
     if (this.__onNavigate) navigation?.removeEventListener('navigate', this.__onNavigate)
   },
   methods: {
-    proceed( path, isPop = true ) {
-      if ( !isPop ) {
+    proceed(path, isPop = true) {
+      if (!isPop) {
         isNavigatingProgrammatically = true
-        setTimeout( () => { isNavigatingProgrammatically = false }, 0 )
-        if ( !this.memoryMode ) history.pushState( null, '', path )
+        setTimeout(() => { isNavigatingProgrammatically = false }, 0)
+        if (!this.memoryMode) history.pushState(null, '', path)
       }
       this.route = path
       routeState.value.route = path
 
-      if ( typeof document !== 'undefined' ) {
-        if ( !this.__didFirstNav ) { this.__didFirstNav = true; return }
-        const [, hash = '' ] = path.split('#')
-        const behavior = this.scrollSmooth ? 'smooth' : 'auto'
-        requestAnimationFrame( () => {
-          if ( hash ) {
-            document.getElementById( decodeURIComponent( hash ) )?.scrollIntoView({ behavior, block: 'start' })
-          } else {
-            window.scrollTo({ top: 0, left: 0, behavior })
-          }
-        } )
-      }
-    },
+      const first = !this.__didFirstNav
+      this.__didFirstNav = true
+      if (first) return
 
+      const [, hash = ''] = path.split('#')
+      const behavior = this.scrollSmooth ? 'smooth' : 'auto'
+      requestAnimationFrame(() => {
+        if (hash) {
+          document.getElementById(decodeURIComponent(hash))?.scrollIntoView({ behavior, block: 'start' })
+        } else {
+          window.scrollTo({ top: 0, left: 0, behavior })
+        }
+      })
+    }
+    ,
 
     /**
      * Navigate to a new route
