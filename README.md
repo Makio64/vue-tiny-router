@@ -120,6 +120,7 @@ That's it! 🎉
   :routes="routes"           // Required: Array of route objects
   :redirects="redirects"     // Optional: Redirect mappings
   :memoryMode="false"        // Optional: In-memory routing
+  :scrollSmooth="false"        // Optional: smooth scrolling on navigation
 />
 ```
 

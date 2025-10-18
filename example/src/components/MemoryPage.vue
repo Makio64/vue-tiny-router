@@ -3,7 +3,7 @@
     <div class="card">
       <h2>🧠 Memory Mode</h2>
       <p>This page demonstrates memory mode routing - a separate router instance that doesn't affect the browser URL.</p>
-      
+
       <div class="section">
         <h3>📍 Current Browser URL</h3>
         <div class="url-display">
@@ -142,4 +142,4 @@ export default {
     grid-template-columns: 1fr;
   }
 }
-</style> 
+</style>

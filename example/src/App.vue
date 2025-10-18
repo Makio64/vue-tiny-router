@@ -5,7 +5,7 @@
         <h1>Vue Tiny Router</h1>
         <p>Interactive Examples</p>
       </div>
-      
+
       <nav class="nav">
         <a href="/" class="nav-item" :class="{ active: $router.route === '/' }">Home</a>
         <a href="/params" class="nav-item" :class="{ active: $router.route?.startsWith('/params') }">Route Parameters</a>
@@ -16,7 +16,7 @@
     </aside>
 
     <main class="main-content">
-      <TinyRouter :routes="routes" :redirects="redirects" />
+      <TinyRouter :routes="routes" :redirects="redirects" :smoothScroll="false"/>
     </main>
   </div>
 </template>
@@ -71,7 +71,7 @@ body {
 
 #app {
   display: flex;
-  min-height: 100vh;
+  min-height: 200vh;
 }
 
 /* Sidebar */
@@ -103,6 +103,9 @@ body {
 }
 
 .nav {
+  position: sticky;
+  top: 1rem;
+  left: 0;
   padding: 0 1rem;
 }
 
@@ -262,26 +265,26 @@ body {
   #app {
     flex-direction: column;
   }
-  
+
   .sidebar {
     width: 100%;
     padding: 1rem 0;
   }
-  
+
   .nav {
     display: flex;
     overflow-x: auto;
     gap: 0.5rem;
     padding: 0 1rem;
   }
-  
+
   .nav-item {
     white-space: nowrap;
     margin-bottom: 0;
   }
-  
+
   .main-content {
     padding: 1rem;
   }
 }
-</style> 
+</style>
