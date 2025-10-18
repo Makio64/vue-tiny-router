@@ -20,9 +20,7 @@ export const initialRoute = ref( window?.location.pathname )
 /** Initial query params when app started */
 export const initialQuery = ref( window?.location.search )
 
-/**
- * Minimal reactive route state for Composition API consumers
- */
+// Minimal reactive route state for Composition API consumers
 export const routeState = ref( { route: ( ( initialRoute.value || '' ) + ( initialQuery.value || '' ) ), params: {} } )
 
 const findMatch = ( path, routes, redirects ) => {
@@ -187,20 +185,9 @@ export const TinyRouterInstall = {
         TinyRouterInstance?.push(path)
       },
 
-      /** Get current route path - this.$router.route */
-      get route() {
-        return TinyRouterInstance?.route
-      },
-
-      /** Get current component instance - this.$router.component */
-      get component() {
-        return TinyRouterInstance?.currentComponent
-      },
-
-      /** Get route parameters object - this.$router.params.id */
-      get params() {
-        return TinyRouterInstance?.routeParams
-      },
+      get route() { return TinyRouterInstance?.route },
+      get component() { return TinyRouterInstance?.currentComponent },
+      get params() { return TinyRouterInstance?.routeParams },
       // this is native history API so doesnt need to be wrapped, dont work in memorymode
       // go( n ) { history.go( n ) },
       // forward() { history.forward() },
@@ -216,26 +203,14 @@ export const useRouter = () => ({
   push(path) {
     TinyRouterInstance?.push(path)
   },
-  get route() {
-    return routeState.value.route
-  },
-  get params() {
-    return routeState.value.params
-  },
-  get component() {
-    return TinyRouterInstance?.currentComponent
-  }
+  get route() { return routeState.value.route},
+  get params() { return routeState.value.params},
+  get component() { return TinyRouterInstance?.currentComponent}
 })
 
-/**
- * Reactive route state for Composition API
- */
+// Reactive route state for Composition API
 export const useRoute = () => ({
-  get route() {
-    return routeState.value.route
-  },
-  get params() {
-    return routeState.value.params
-  }
+  get route() { return routeState.value.route },
+  get params() { return routeState.value.params }
 })
 </script>
