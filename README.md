@@ -2,11 +2,11 @@
 
 [![CI](https://github.com/Makio64/vue-tiny-router/actions/workflows/ci.yml/badge.svg)](https://github.com/Makio64/vue-tiny-router/actions/workflows/ci.yml)
 
-A lightweight Vue 3 router. **~1.25 kB Brotli** with all the features you need.
+A lightweight Vue 3 router. **~1.33 kB Brotli** with all the features you need.
 
 ## Why vue-tiny-router?
 
-- 🤏 **Tiny**: ~1.25 kB Brotli
+- 🤏 **Tiny**: ~1.33 kB Brotli
 - ⚡ **Fast**: Minimal overhead, maximum performance
 - 🎯 **Simple**: Easy setup, intuitive API
 - 💪 **Complete**: Route params, guards, lazy loading, redirects

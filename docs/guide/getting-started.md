@@ -1,6 +1,6 @@
 # Getting Started
 
-Vue Tiny Router is a lightweight Vue 3 router that provides all the essential routing features you need in just ~1.25 kB (Brotli).
+Vue Tiny Router is a lightweight Vue 3 router that provides all the essential routing features you need in just ~1.33 kB (Brotli).
 
 ## Installation
 

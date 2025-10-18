@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "Vue Tiny Router"
   text: "Lightweight Vue 3 Router"
-  tagline: "Only ~1.25 kB Brotli with all the features you need"
+  tagline: "Only ~1.33 kB Brotli with all the features you need"
   actions:
     - theme: brand
       text: Get Started
@@ -19,7 +19,7 @@ hero:
 features:
   - icon: "•"
     title: Incredibly Small
-    details: Only ~1.25 kB Brotli - perfect for performance-conscious applications
+    details: Only ~1.33 kB Brotli - perfect for performance-conscious applications
   - icon: "•"
     title: Lightning Fast
     details: Minimal overhead with maximum performance

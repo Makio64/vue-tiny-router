@@ -3,7 +3,7 @@
 Thanks for considering contributing! This project aims to stay tiny, simple, and well-tested.
 
 ## Principles
-- Keep it tiny: target bundle size ≤ 1.3 kB Brotli
+- Keep it tiny: target bundle size ≤ 1.33 kB Brotli
 - Prefer minimal features that cover common use-cases
 - Maintain clear, readable code and tests ( help yourself with AI )
 

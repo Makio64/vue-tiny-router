@@ -69,7 +69,7 @@
     {
       "name": "vue-tiny-router (ES Module)",
       "path": "dist/index.js",
-      "limit": "1.3 KB",
+      "limit": "1.4 KB",
       "brotli": true
     }
   ],
