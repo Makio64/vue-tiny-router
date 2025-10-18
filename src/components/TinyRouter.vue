@@ -8,19 +8,9 @@ import { ref } from 'vue'
 let TinyRouterInstance
 let isNavigatingProgrammatically = false
 
-/**
- * Default route to redirect to on app start
- * @example defaultRoute.value = '/home'
- */
 export const defaultRoute = ref( null )
-
-/** Initial route when app started */
 export const initialRoute = ref( window?.location.pathname )
-
-/** Initial query params when app started */
 export const initialQuery = ref( window?.location.search )
-
-// Minimal reactive route state for Composition API consumers
 export const routeState = ref( { route: ( ( initialRoute.value || '' ) + ( initialQuery.value || '' ) ), params: {} } )
 
 const findMatch = ( path, routes, redirects ) => {
@@ -28,19 +18,16 @@ const findMatch = ( path, routes, redirects ) => {
   const resolved = redirects[pathOnly] || pathOnly
   if ( !resolved ) return { route: null, params: {}, resolved: pathOnly }
 
-  // Check exact matches first (higher priority)
+  // Check exact matches first
   const exactMatch = routes.find( r =>  r.path === resolved || r.path === resolved + '/' || r.path + '/' === resolved )
   if ( exactMatch ) return { route: exactMatch, params: {}, resolved }
 
   // Check parameterized and wildcard routes
   for ( const route of routes ) {
     const paramNames = []
-    // Build pattern from the original route path in a safe order to avoid
-    // touching generated tokens like "([^/]*)"
     let pattern = route.path
     // Support wildcard catch-all (e.g., /* or /user/*)
     if ( pattern.includes( '*' ) ) pattern = pattern.replace( /\*+/g, '.*' )
-    // Replace params AFTER wildcard processing
     pattern = pattern.replace( /:([^/]+)/g, ( _, name ) => {
       paramNames.push( name )
       return '([^/]*)'
@@ -68,28 +55,9 @@ const findMatch = ( path, routes, redirects ) => {
 const TinyRouter = {
   name: 'TinyRouter',
   props: {
-    /**
-     * Array of route objects with path and component
-     * @example [{ path: '/', component: Home }, { path: '/user/:id', component: User }]
-     */
     routes: {type: Array, required: true},
-
-    /**
-     * Object mapping old paths to new paths for redirects
-     * @example { '/old': '/new', '/home': '/' }
-     */
     redirects: {type: Object, default: () => ({})},
-
-    /**
-     * Enable memory-only routing (doesn't affect browser URL/history)
-     * Useful for embedded apps or testing
-     */
     memoryMode: {type: Boolean, default: false},
-
-    /**
-     * Enable smooth scrolling when changing routes
-     * @default false - instant scroll
-     */
     scrollSmooth: {type: Boolean, default: false}
   },
   data: () => ({route: '', routeParams: {}}),
@@ -174,17 +142,13 @@ export {TinyRouter}
 
 /**
  * Vue plugin installer - adds TinyRouter component and $router global property
- * Usage: app.use(TinyRouterInstall)
+ * @usage app.use(TinyRouterInstall)
  */
 export const TinyRouterInstall = {
   install(app) {
     app.component('TinyRouter', TinyRouter)
     app.config.globalProperties.$router = {
-      /** Navigate to a route - this.$router.push('/path') */
-      push(path) {
-        TinyRouterInstance?.push(path)
-      },
-
+      push(path) { TinyRouterInstance?.push(path) },
       get route() { return TinyRouterInstance?.route },
       get component() { return TinyRouterInstance?.currentComponent },
       get params() { return TinyRouterInstance?.routeParams },
@@ -196,9 +160,7 @@ export const TinyRouterInstall = {
   }
 }
 
-/**
- * Programmatic navigation and state for Composition API
- */
+//---- Composition API
 export const useRouter = () => ({
   push(path) {
     TinyRouterInstance?.push(path)
@@ -208,7 +170,6 @@ export const useRouter = () => ({
   get component() { return TinyRouterInstance?.currentComponent}
 })
 
-// Reactive route state for Composition API
 export const useRoute = () => ({
   get route() { return routeState.value.route },
   get params() { return routeState.value.params }
