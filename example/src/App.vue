@@ -29,6 +29,7 @@ import UserProfile from './components/UserProfile.vue'
 import RouteGuards from './components/RouteGuards.vue'
 import AnchorLinks from './components/AnchorLinks.vue'
 import MemoryMode from './components/MemoryMode.vue'
+import NotFound from "./components/NotFound.vue";
 
 export default {
   name: 'App',
@@ -43,7 +44,8 @@ export default {
         { path: '/user/:id', component: UserProfile },
         { path: '/guards', component: RouteGuards },
         { path: '/anchors', component: AnchorLinks },
-        { path: '/memory', component: MemoryMode }
+        { path: '/memory', component: MemoryMode },
+        { path: '/*', component: NotFound }
       ],
       redirects: {
         '/home': '/',
