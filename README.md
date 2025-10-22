@@ -44,6 +44,7 @@ createApp(App)
 import { TinyRouter } from 'vue-tiny-router'
 import Home from './views/Home.vue'
 import Profile from './views/Profile.vue'
+import NotFound from './views/NotFound.vue'
 
 export default {
   components: { TinyRouter },
@@ -51,7 +52,8 @@ export default {
     return {
       routes: [
         { path: '/', component: Home },
-        { path: '/profile/:id', component: Profile }
+        { path: '/profile/:id', component: Profile },
+        { path: '/*', component: NotFound } // catch-all 404,
       ]
     }
   }
