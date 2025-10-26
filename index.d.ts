@@ -43,4 +43,8 @@ declare const TinyRouter: Component & { props: TinyRouterProps }
 export default TinyRouter
 export { TinyRouter }
 
-
+declare module '@vue/runtime-core' {
+    interface ComponentCustomProperties {
+        $router: RouterAPI
+    }
+}
