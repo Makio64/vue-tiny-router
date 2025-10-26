@@ -1,39 +1,39 @@
 <template>
-  <div class="memory-home">
-    <h3>🏠 Memory Router Home</h3>
-    <p>This is the home page of the memory router. Notice how the browser URL doesn't change!</p>
+	<div class="memory-home">
+		<h3>🏠 Memory Router Home</h3>
+		<p>This is the home page of the memory router. Notice how the browser URL doesn't change!</p>
 
-    <div class="memory-nav">
-      <button @click="navigate('/about')" class="btn btn-secondary">
-        Go to Memory About
-      </button>
-      <span class="separator">|</span>
-      <span class="current-route">Current: {{ currentRoute }}</span>
-    </div>
+		<div class="memory-nav">
+			<button class="btn btn-secondary" @click="navigate('/about')">
+				Go to Memory About
+			</button>
+			<span class="separator">|</span>
+			<span class="current-route">Current: {{ currentRoute }}</span>
+		</div>
 
-    <div class="info">
-      <p>🧠 This router operates in memory mode - it doesn't affect the browser's history or URL.</p>
-    </div>
-  </div>
+		<div class="info">
+			<p>🧠 This router operates in memory mode - it doesn't affect the browser's history or URL.</p>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'MemoryHome',
-  data() {
-    return {
-      currentRoute: '/'
-    }
-  },
-  methods: {
-    navigate(path) {
-      // We need to find the memory router instance
-      // For demo purposes, we'll simulate navigation
-      this.currentRoute = path
-      // In reality, you'd call the memory router's push method
-      console.log('Memory router navigating to:', path)
-    }
-  }
+	name: 'MemoryHome',
+	data() {
+		return {
+			currentRoute: '/'
+		}
+	},
+	methods: {
+		navigate( path ) {
+			// We need to find the memory router instance
+			// For demo purposes, we'll simulate navigation
+			this.currentRoute = path
+			// In reality, you'd call the memory router's push method
+			console.log( 'Memory router navigating to:', path )
+		}
+	}
 }
 </script>
 

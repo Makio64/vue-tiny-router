@@ -1,59 +1,59 @@
 <template>
-  <div id="app">
-    <aside class="sidebar">
-      <div class="logo">
-        <h1>Vue Tiny Router</h1>
-        <p>Interactive Examples</p>
-      </div>
+	<div id="app">
+		<aside class="sidebar">
+			<div class="logo">
+				<h1>Vue Tiny Router</h1>
+				<p>Interactive Examples</p>
+			</div>
 
-      <nav class="nav">
-        <a href="/" class="nav-item" :class="{ active: $router.route === '/' }">Home</a>
-        <a href="/params" class="nav-item" :class="{ active: $router.route?.startsWith('/params') }">Route Parameters</a>
-        <a href="/guards" class="nav-item" :class="{ active: $router.route === '/guards' }">Route Guards</a>
-        <a href="/anchors" class="nav-item" :class="{ active: $router.route === '/anchors' }">Anchor Links</a>
-        <a href="/memory" class="nav-item" :class="{ active: $router.route === '/memory' }">Memory Mode</a>
-      </nav>
-    </aside>
+			<nav class="nav">
+				<a href="/" class="nav-item" :class="{ active: $router.route === '/' }">Home</a>
+				<a href="/params" class="nav-item" :class="{ active: $router.route?.startsWith('/params') }">Route Parameters</a>
+				<a href="/guards" class="nav-item" :class="{ active: $router.route === '/guards' }">Route Guards</a>
+				<a href="/anchors" class="nav-item" :class="{ active: $router.route === '/anchors' }">Anchor Links</a>
+				<a href="/memory" class="nav-item" :class="{ active: $router.route === '/memory' }">Memory Mode</a>
+			</nav>
+		</aside>
 
-    <main class="main-content">
-      <TinyRouter :routes="routes" :redirects="redirects" :smoothScroll="false"/>
-    </main>
-  </div>
+		<main class="main-content">
+			<TinyRouter :routes="routes" :redirects="redirects" :smooth-scroll="false" />
+		</main>
+	</div>
 </template>
 
 <script>
 import { TinyRouter } from '../../src/index.js'
+import AnchorLinks from './components/AnchorLinks.vue'
 import Home from './components/Home.vue'
+import MemoryMode from './components/MemoryMode.vue'
+import NotFound from "./components/NotFound.vue"
+import RouteGuards from './components/RouteGuards.vue'
 import RouteParams from './components/RouteParams.vue'
 import UserProfile from './components/UserProfile.vue'
-import RouteGuards from './components/RouteGuards.vue'
-import AnchorLinks from './components/AnchorLinks.vue'
-import MemoryMode from './components/MemoryMode.vue'
-import NotFound from "./components/NotFound.vue";
 
 export default {
-  name: 'App',
-  components: {
-    TinyRouter
-  },
-  data() {
-    return {
-      routes: [
-        { path: '/', component: Home },
-        { path: '/params', component: RouteParams },
-        { path: '/user/:id', component: UserProfile },
-        { path: '/guards', component: RouteGuards },
-        { path: '/anchors', component: AnchorLinks },
-        { path: '/memory', component: MemoryMode },
-        { path: '/*', component: NotFound }
-      ],
-      redirects: {
-        '/home': '/',
-        '/profile': '/user/123',
-        '/about': '/params'
-      }
-    }
-  }
+	name: 'App',
+	components: {
+		TinyRouter
+	},
+	data() {
+		return {
+			routes: [
+				{ path: '/', component: Home },
+				{ path: '/params', component: RouteParams },
+				{ path: '/user/:id', component: UserProfile },
+				{ path: '/guards', component: RouteGuards },
+				{ path: '/anchors', component: AnchorLinks },
+				{ path: '/memory', component: MemoryMode },
+				{ path: '/*', component: NotFound }
+			],
+			redirects: {
+				'/home': '/',
+				'/profile': '/user/123',
+				'/about': '/params'
+			}
+		}
+	}
 }
 </script>
 

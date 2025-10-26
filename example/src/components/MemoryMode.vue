@@ -1,79 +1,79 @@
 <template>
-  <div class="container">
-    <div class="card">
-      <h1>Memory Mode Demo</h1>
-      <p>Navigate below: the browser URL stays unchanged.</p>
+	<div class="container">
+		<div class="card">
+			<h1>Memory Mode Demo</h1>
+			<p>Navigate below: the browser URL stays unchanged.</p>
       
-      <div class="section">
-        <strong>Current Browser URL</strong>
-        <div class="url-display">
-          <strong>{{ currentUrl }}</strong>
-        </div>
-      </div>
+			<div class="section">
+				<strong>Current Browser URL</strong>
+				<div class="url-display">
+					<strong>{{ currentUrl }}</strong>
+				</div>
+			</div>
 
-      <div class="section">
-        <strong>Memory Router</strong>
+			<div class="section">
+				<strong>Memory Router</strong>
         
-        <div class="memory-router-container">
-          <div class="memory-nav">
-            <button @click="memoryRoute = '/'" :class="['memory-btn', memoryRoute === '/' ? 'active' : '']">
-              Home
-            </button>
-            <button @click="memoryRoute = '/about'" :class="['memory-btn', memoryRoute === '/about' ? 'active' : '']">
-              About
-            </button>
-            <button @click="memoryRoute = '/contact'" :class="['memory-btn', memoryRoute === '/contact' ? 'active' : '']">
-              Contact
-            </button>
-          </div>
+				<div class="memory-router-container">
+					<div class="memory-nav">
+						<button :class="['memory-btn', memoryRoute === '/' ? 'active' : '']" @click="memoryRoute = '/'">
+							Home
+						</button>
+						<button :class="['memory-btn', memoryRoute === '/about' ? 'active' : '']" @click="memoryRoute = '/about'">
+							About
+						</button>
+						<button :class="['memory-btn', memoryRoute === '/contact' ? 'active' : '']" @click="memoryRoute = '/contact'">
+							Contact
+						</button>
+					</div>
           
-          <div class="memory-content">
-            <div class="memory-status">
-              <strong>Route:</strong> {{ memoryRoute }}
-            </div>
+					<div class="memory-content">
+						<div class="memory-status">
+							<strong>Route:</strong> {{ memoryRoute }}
+						</div>
             
-            <div v-if="memoryRoute === '/'" class="memory-page">
-              Home content (memory router)
-            </div>
+						<div v-if="memoryRoute === '/'" class="memory-page">
+							Home content (memory router)
+						</div>
             
-            <div v-if="memoryRoute === '/about'" class="memory-page">
-              About content (memory router)
-            </div>
+						<div v-if="memoryRoute === '/about'" class="memory-page">
+							About content (memory router)
+						</div>
             
-            <div v-if="memoryRoute === '/contact'" class="memory-page">
-              Contact content (memory router)
-            </div>
-          </div>
-        </div>
-      </div>
+						<div v-if="memoryRoute === '/contact'" class="memory-page">
+							Contact content (memory router)
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <div class="section">
-        <button @click="$router.push('/')" class="btn">← Home</button>
-      </div>
-    </div>
-  </div>
+			<div class="section">
+				<button class="btn" @click="$router.push('/')">← Home</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'MemoryMode',
-  data() {
-    return {
-      memoryRoute: '/',
-      currentUrl: window.location.href
-    }
-  },
-  mounted() {
-    // Update URL display periodically to show it doesn't change
-    this.urlInterval = setInterval(() => {
-      this.currentUrl = window.location.href
-    }, 100)
-  },
-  beforeUnmount() {
-    if (this.urlInterval) {
-      clearInterval(this.urlInterval)
-    }
-  }
+	name: 'MemoryMode',
+	data() {
+		return {
+			memoryRoute: '/',
+			currentUrl: window.location.href
+		}
+	},
+	mounted() {
+		// Update URL display periodically to show it doesn't change
+		this.urlInterval = setInterval( () => {
+			this.currentUrl = window.location.href
+		}, 100 )
+	},
+	beforeUnmount() {
+		if ( this.urlInterval ) {
+			clearInterval( this.urlInterval )
+		}
+	}
 }
 </script>
 

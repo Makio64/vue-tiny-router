@@ -1,47 +1,46 @@
 <template>
-  <div class="container">
-    <div class="card">
-      <h1>Anchor Links Demo</h1>
-      <p>Click a link to jump to a section.</p>
+	<div class="container">
+		<div class="card">
+			<h1>Anchor Links Demo</h1>
+			<p>Click a link to jump to a section.</p>
       
-      <div class="section">
-        <div class="anchor-nav">
-          <button class="anchor-btn" @click="$router.push('/anchors#section1')">Section 1</button>
-          <button class="anchor-btn" @click="$router.push('/anchors#section2')">Section 2</button>
-          <button class="anchor-btn" @click="$router.push('/anchors#section3')">Section 3</button>
-        </div>
-      </div>
+			<div class="section">
+				<div class="anchor-nav">
+					<button class="anchor-btn" @click="$router.push('/anchors#section1')">Section 1</button>
+					<button class="anchor-btn" @click="$router.push('/anchors#section2')">Section 2</button>
+					<button class="anchor-btn" @click="$router.push('/anchors#section3')">Section 3</button>
+				</div>
+			</div>
 
-      <div class="section">
-      </div>
-    </div>
+			<div class="section" />
+		</div>
 
-    <!-- Minimal anchor sections -->
-    <div class="anchor-section section-1" id="section1">
-      <h2>SECTION 1</h2>
-      <button class="back-btn" @click="scrollToTop">Back to Top</button>
-    </div>
-    <div class="anchor-section section-2" id="section2">
-      <h2>SECTION 2</h2>
-      <button class="back-btn" @click="scrollToTop">Back to Top</button>
-    </div>
-    <div class="anchor-section section-3" id="section3">
-      <h2>SECTION 3</h2>
-      <button class="back-btn" @click="scrollToTop">Back to Top</button>
-    </div>
-  </div>
+		<!-- Minimal anchor sections -->
+		<div id="section1" class="anchor-section section-1">
+			<h2>SECTION 1</h2>
+			<button class="back-btn" @click="scrollToTop">Back to Top</button>
+		</div>
+		<div id="section2" class="anchor-section section-2">
+			<h2>SECTION 2</h2>
+			<button class="back-btn" @click="scrollToTop">Back to Top</button>
+		</div>
+		<div id="section3" class="anchor-section section-3">
+			<h2>SECTION 3</h2>
+			<button class="back-btn" @click="scrollToTop">Back to Top</button>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'AnchorLinks',
-  methods: {
-    scrollToTop() {
-      if (typeof window !== 'undefined') {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }
-    }
-  }
+	name: 'AnchorLinks',
+	methods: {
+		scrollToTop() {
+			if ( typeof window !== 'undefined' ) {
+				window.scrollTo( { top: 0, behavior: 'smooth' } )
+			}
+		}
+	}
 }
 </script>
 

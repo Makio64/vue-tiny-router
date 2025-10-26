@@ -1,67 +1,67 @@
 <template>
-  <div class="memory-page">
-    <div class="card">
-      <h2>🧠 Memory Mode</h2>
-      <p>This page demonstrates memory mode routing - a separate router instance that doesn't affect the browser URL.</p>
+	<div class="memory-page">
+		<div class="card">
+			<h2>🧠 Memory Mode</h2>
+			<p>This page demonstrates memory mode routing - a separate router instance that doesn't affect the browser URL.</p>
 
-      <div class="section">
-        <h3>📍 Current Browser URL</h3>
-        <div class="url-display">
-          <strong>{{ window.location.href }}</strong>
-        </div>
-        <p>Notice how the URL stays the same when you navigate in the memory router below.</p>
-      </div>
+			<div class="section">
+				<h3>📍 Current Browser URL</h3>
+				<div class="url-display">
+					<strong>{{ window.location.href }}</strong>
+				</div>
+				<p>Notice how the URL stays the same when you navigate in the memory router below.</p>
+			</div>
 
-      <div class="section">
-        <h3>🎯 When to Use Memory Mode</h3>
-        <div class="use-cases">
-          <div class="use-case">
-            <h4>🧪 Testing</h4>
-            <p>Perfect for unit tests where you don't want to affect the browser's history</p>
-          </div>
-          <div class="use-case">
-            <h4>📱 Embedded Apps</h4>
-            <p>When your Vue app is embedded in another application</p>
-          </div>
-          <div class="use-case">
-            <h4>🎭 Modals & Overlays</h4>
-            <p>For complex navigation within modals or overlay components</p>
-          </div>
-          <div class="use-case">
-            <h4>🔄 Multi-step Forms</h4>
-            <p>Navigate through form steps without changing the main URL</p>
-          </div>
-        </div>
-      </div>
+			<div class="section">
+				<h3>🎯 When to Use Memory Mode</h3>
+				<div class="use-cases">
+					<div class="use-case">
+						<h4>🧪 Testing</h4>
+						<p>Perfect for unit tests where you don't want to affect the browser's history</p>
+					</div>
+					<div class="use-case">
+						<h4>📱 Embedded Apps</h4>
+						<p>When your Vue app is embedded in another application</p>
+					</div>
+					<div class="use-case">
+						<h4>🎭 Modals & Overlays</h4>
+						<p>For complex navigation within modals or overlay components</p>
+					</div>
+					<div class="use-case">
+						<h4>🔄 Multi-step Forms</h4>
+						<p>Navigate through form steps without changing the main URL</p>
+					</div>
+				</div>
+			</div>
 
-      <div class="section">
-        <h3>💡 How It Works</h3>
-        <div class="explanation">
-          <p>Memory mode is enabled by setting the <code>memoryMode</code> prop to <code>true</code>:</p>
-          <div class="code-example">
-            <pre><code>&lt;TinyRouter :routes="routes" :memoryMode="true" /&gt;</code></pre>
-          </div>
-          <p>The router maintains its own internal state without calling <code>history.pushState()</code>.</p>
-        </div>
-      </div>
+			<div class="section">
+				<h3>💡 How It Works</h3>
+				<div class="explanation">
+					<p>Memory mode is enabled by setting the <code>memoryMode</code> prop to <code>true</code>:</p>
+					<div class="code-example">
+						<pre><code>&lt;TinyRouter :routes="routes" :memoryMode="true" /&gt;</code></pre>
+					</div>
+					<p>The router maintains its own internal state without calling <code>history.pushState()</code>.</p>
+				</div>
+			</div>
 
-      <div class="section">
-        <h3>🔗 Navigation</h3>
-        <button @click="$router.push('/')" class="btn">Back to Home</button>
-        <button @click="$router.push('/about')" class="btn">About Page</button>
-      </div>
-    </div>
-  </div>
+			<div class="section">
+				<h3>🔗 Navigation</h3>
+				<button class="btn" @click="$router.push('/')">Back to Home</button>
+				<button class="btn" @click="$router.push('/about')">About Page</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'MemoryPage',
-  data() {
-    return {
-      window: window
-    }
-  }
+	name: 'MemoryPage',
+	data() {
+		return {
+			window: window
+		}
+	}
 }
 </script>
 

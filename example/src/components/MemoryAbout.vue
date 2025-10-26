@@ -1,46 +1,46 @@
 <template>
-  <div class="memory-about">
-    <h3>ℹ️ Memory Router About</h3>
-    <p>This is the about page of the memory router. The browser URL remains unchanged!</p>
+	<div class="memory-about">
+		<h3>ℹ️ Memory Router About</h3>
+		<p>This is the about page of the memory router. The browser URL remains unchanged!</p>
     
-    <div class="memory-nav">
-      <button @click="navigate('/')" class="btn btn-secondary">
-        Go to Memory Home
-      </button>
-      <span class="separator">|</span>
-      <span class="current-route">Current: {{ currentRoute }}</span>
-    </div>
+		<div class="memory-nav">
+			<button class="btn btn-secondary" @click="navigate('/')">
+				Go to Memory Home
+			</button>
+			<span class="separator">|</span>
+			<span class="current-route">Current: {{ currentRoute }}</span>
+		</div>
     
-    <div class="features">
-      <h4>🌟 Memory Mode Features:</h4>
-      <ul>
-        <li>✅ No browser history changes</li>
-        <li>✅ No URL changes</li>
-        <li>✅ Perfect for embedded scenarios</li>
-        <li>✅ Ideal for testing</li>
-      </ul>
-    </div>
+		<div class="features">
+			<h4>🌟 Memory Mode Features:</h4>
+			<ul>
+				<li>✅ No browser history changes</li>
+				<li>✅ No URL changes</li>
+				<li>✅ Perfect for embedded scenarios</li>
+				<li>✅ Ideal for testing</li>
+			</ul>
+		</div>
     
-    <div class="info">
-      <p>🧠 This demonstrates how you can have multiple router instances with different behaviors.</p>
-    </div>
-  </div>
+		<div class="info">
+			<p>🧠 This demonstrates how you can have multiple router instances with different behaviors.</p>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'MemoryAbout',
-  data() {
-    return {
-      currentRoute: '/about'
-    }
-  },
-  methods: {
-    navigate(path) {
-      this.currentRoute = path
-      console.log('Memory router navigating to:', path)
-    }
-  }
+	name: 'MemoryAbout',
+	data() {
+		return {
+			currentRoute: '/about'
+		}
+	},
+	methods: {
+		navigate( path ) {
+			this.currentRoute = path
+			console.log( 'Memory router navigating to:', path )
+		}
+	}
 }
 </script>
 

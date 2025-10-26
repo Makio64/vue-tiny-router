@@ -1,20 +1,20 @@
 <template>
-  <div class="protected">
-    <div class="card">
-      <h2>🔒 Protected Route</h2>
-      <p>This page demonstrates route guards in action.</p>
+	<div class="protected">
+		<div class="card">
+			<h2>🔒 Protected Route</h2>
+			<p>This page demonstrates route guards in action.</p>
       
-      <div class="section">
-        <h3>✅ Access Granted</h3>
-        <p>You successfully accessed this protected route! This shows that the route guard allowed navigation.</p>
-      </div>
+			<div class="section">
+				<h3>✅ Access Granted</h3>
+				<p>You successfully accessed this protected route! This shows that the route guard allowed navigation.</p>
+			</div>
 
-      <div class="section">
-        <h3>🛡️ How Route Guards Work</h3>
-        <div class="explanation">
-          <p>This component implements the <code>beforeRouteLeave</code> guard:</p>
-          <div class="code-example">
-            <pre><code>beforeRouteLeave(next) {
+			<div class="section">
+				<h3>🛡️ How Route Guards Work</h3>
+				<div class="explanation">
+					<p>This component implements the <code>beforeRouteLeave</code> guard:</p>
+					<div class="code-example">
+						<pre><code>beforeRouteLeave(next) {
   if (this.allowLeave) {
     next() // Allow navigation
   } else {
@@ -22,113 +22,113 @@
     console.log('Navigation blocked!')
   }
 }</code></pre>
-          </div>
-        </div>
-      </div>
+					</div>
+				</div>
+			</div>
 
-      <div class="section">
-        <h3>🔄 Test Route Guard</h3>
-        <p>Toggle the guard and try to navigate away:</p>
+			<div class="section">
+				<h3>🔄 Test Route Guard</h3>
+				<p>Toggle the guard and try to navigate away:</p>
         
-        <div class="guard-controls">
-          <div class="guard-status">
-            <strong>Guard Status:</strong>
-            <span :class="allowLeave ? 'status-allowed' : 'status-blocked'">
-              {{ allowLeave ? '✅ Allow Navigation' : '❌ Block Navigation' }}
-            </span>
-          </div>
+				<div class="guard-controls">
+					<div class="guard-status">
+						<strong>Guard Status:</strong>
+						<span :class="allowLeave ? 'status-allowed' : 'status-blocked'">
+							{{ allowLeave ? '✅ Allow Navigation' : '❌ Block Navigation' }}
+						</span>
+					</div>
           
-          <button 
-            @click="allowLeave = !allowLeave" 
-            :class="['btn', allowLeave ? 'btn-danger' : 'btn-success']"
-          >
-            {{ allowLeave ? '🔒 Enable Guard' : '🔓 Disable Guard' }}
-          </button>
-        </div>
-      </div>
+					<button 
+						:class="['btn', allowLeave ? 'btn-danger' : 'btn-success']" 
+						@click="allowLeave = !allowLeave"
+					>
+						{{ allowLeave ? '🔒 Enable Guard' : '🔓 Disable Guard' }}
+					</button>
+				</div>
+			</div>
 
-      <div class="section">
-        <h3>🚨 Guard Test Area</h3>
-        <div class="test-area">
-          <p>Try to navigate away using these buttons:</p>
-          <div class="test-buttons">
-            <button @click="$router.push('/')" class="btn">Go to Home</button>
-            <button @click="$router.push('/about')" class="btn">Go to About</button>
-            <button @click="$router.push('/user/123')" class="btn">Go to User</button>
-          </div>
+			<div class="section">
+				<h3>🚨 Guard Test Area</h3>
+				<div class="test-area">
+					<p>Try to navigate away using these buttons:</p>
+					<div class="test-buttons">
+						<button class="btn" @click="$router.push('/')">Go to Home</button>
+						<button class="btn" @click="$router.push('/about')">Go to About</button>
+						<button class="btn" @click="$router.push('/user/123')">Go to User</button>
+					</div>
           
-          <div v-if="!allowLeave" class="warning">
-            <p>⚠️ Navigation is currently blocked. Toggle the guard above to allow navigation.</p>
-          </div>
-        </div>
-      </div>
+					<div v-if="!allowLeave" class="warning">
+						<p>⚠️ Navigation is currently blocked. Toggle the guard above to allow navigation.</p>
+					</div>
+				</div>
+			</div>
 
-      <div class="section">
-        <h3>📝 Guard Use Cases</h3>
-        <div class="use-cases">
-          <div class="use-case">
-            <h4>💾 Unsaved Changes</h4>
-            <p>Prevent users from leaving a form with unsaved changes</p>
-          </div>
-          <div class="use-case">
-            <h4>🔐 Authentication</h4>
-            <p>Ensure users are logged in before accessing protected routes</p>
-          </div>
-          <div class="use-case">
-            <h4>📊 Analytics</h4>
-            <p>Track user behavior before they leave a page</p>
-          </div>
-          <div class="use-case">
-            <h4>🎬 Animations</h4>
-            <p>Play exit animations before navigation</p>
-          </div>
-        </div>
-      </div>
+			<div class="section">
+				<h3>📝 Guard Use Cases</h3>
+				<div class="use-cases">
+					<div class="use-case">
+						<h4>💾 Unsaved Changes</h4>
+						<p>Prevent users from leaving a form with unsaved changes</p>
+					</div>
+					<div class="use-case">
+						<h4>🔐 Authentication</h4>
+						<p>Ensure users are logged in before accessing protected routes</p>
+					</div>
+					<div class="use-case">
+						<h4>📊 Analytics</h4>
+						<p>Track user behavior before they leave a page</p>
+					</div>
+					<div class="use-case">
+						<h4>🎬 Animations</h4>
+						<p>Play exit animations before navigation</p>
+					</div>
+				</div>
+			</div>
 
-      <div class="section">
-        <h3>💡 Implementation Tips</h3>
-        <div class="tips">
-          <div class="tip">
-            <strong>Call next():</strong> Always call the next function to allow navigation
-          </div>
-          <div class="tip">
-            <strong>Async Operations:</strong> You can perform async operations before calling next()
-          </div>
-          <div class="tip">
-            <strong>Conditional Logic:</strong> Use any condition to determine if navigation should proceed
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+			<div class="section">
+				<h3>💡 Implementation Tips</h3>
+				<div class="tips">
+					<div class="tip">
+						<strong>Call next():</strong> Always call the next function to allow navigation
+					</div>
+					<div class="tip">
+						<strong>Async Operations:</strong> You can perform async operations before calling next()
+					</div>
+					<div class="tip">
+						<strong>Conditional Logic:</strong> Use any condition to determine if navigation should proceed
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'Protected',
-  data() {
-    return {
-      allowLeave: true
-    }
-  },
-  methods: {
-    beforeRouteLeave(next) {
-      if (this.allowLeave) {
-        // Allow navigation
-        next()
-      } else {
-        // Block navigation
-        console.log('Navigation blocked by route guard!')
+	name: 'Protected',
+	data() {
+		return {
+			allowLeave: true
+		}
+	},
+	methods: {
+		beforeRouteLeave( next ) {
+			if ( this.allowLeave ) {
+				// Allow navigation
+				next()
+			} else {
+				// Block navigation
+				console.log( 'Navigation blocked by route guard!' )
         
-        // You could show a modal here, or perform other actions
-        // For this demo, we're just blocking the navigation
-        // In a real app, you might do something like:
-        // if (confirm('Are you sure you want to leave?')) {
-        //   next()
-        // }
-      }
-    }
-  }
+				// You could show a modal here, or perform other actions
+				// For this demo, we're just blocking the navigation
+				// In a real app, you might do something like:
+				// if (confirm('Are you sure you want to leave?')) {
+				//   next()
+				// }
+			}
+		}
+	}
 }
 </script>
 

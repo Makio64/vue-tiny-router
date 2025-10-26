@@ -1,29 +1,29 @@
 <template>
-  <div class="container">
-    <div class="card">
-      <h1>Route Parameters Demo</h1>
-      <p>Select a user to update the route, then check the logged parameter value.</p>
+	<div class="container">
+		<div class="card">
+			<h1>Route Parameters Demo</h1>
+			<p>Select a user to update the route, then check the logged parameter value.</p>
       
-      <div class="section">
-        <strong>Navigate:</strong>
+			<div class="section">
+				<strong>Navigate:</strong>
         
-        <div class="button-group">
-          <button @click="$router.push('/user/123')" class="btn">User 123</button>
-          <button @click="$router.push('/user/456')" class="btn">User 456</button>
-          <button @click="$router.push('/user/789')" class="btn">User 789</button>
-        </div>
+				<div class="button-group">
+					<button class="btn" @click="$router.push('/user/123')">User 123</button>
+					<button class="btn" @click="$router.push('/user/456')">User 456</button>
+					<button class="btn" @click="$router.push('/user/789')">User 789</button>
+				</div>
         
-        <div class="info-box">
-          <strong>Current params:</strong> {{ JSON.stringify($router.params) }}
-        </div>
-      </div>
-    </div>
-  </div>
+				<div class="info-box">
+					<strong>Current params:</strong> {{ JSON.stringify($router.params) }}
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'RouteParams'
+	name: 'RouteParams'
 }
 </script>
 

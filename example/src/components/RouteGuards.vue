@@ -1,69 +1,69 @@
 <template>
-  <div class="container">
-    <div class="card">
-      <h1>Route Guard Demo</h1>
-      <p>Toggle the guard and attempt navigation. Guards can also trigger page transition animations.</p>
+	<div class="container">
+		<div class="card">
+			<h1>Route Guard Demo</h1>
+			<p>Toggle the guard and attempt navigation. Guards can also trigger page transition animations.</p>
       
-      <div class="section">
-        <strong>Status:</strong>
+			<div class="section">
+				<strong>Status:</strong>
         
-        <div class="guard-controls">
-          <div class="guard-status">
-            <span :class="guardEnabled ? 'status-blocked' : 'status-allowed'">
-              {{ guardEnabled ? 'Enabled — navigation blocked' : 'Disabled — navigation allowed' }}
-            </span>
-          </div>
+				<div class="guard-controls">
+					<div class="guard-status">
+						<span :class="guardEnabled ? 'status-blocked' : 'status-allowed'">
+							{{ guardEnabled ? 'Enabled — navigation blocked' : 'Disabled — navigation allowed' }}
+						</span>
+					</div>
           
-          <button 
-            @click="guardEnabled = !guardEnabled" 
-            :class="['btn', guardEnabled ? 'btn-success' : 'btn-secondary']"
-          >
-            {{ guardEnabled ? 'Disable Guard' : 'Enable Guard' }}
-          </button>
-        </div>
+					<button 
+						:class="['btn', guardEnabled ? 'btn-success' : 'btn-secondary']" 
+						@click="guardEnabled = !guardEnabled"
+					>
+						{{ guardEnabled ? 'Disable Guard' : 'Enable Guard' }}
+					</button>
+				</div>
         
-        <div class="test-area">
-          <p>Navigation test:</p>
-          <div class="button-group">
-            <button @click="$router.push('/')" class="btn">Home</button>
-            <button @click="$router.push('/params')" class="btn">Route Params</button>
-            <button @click="$router.push('/anchors')" class="btn">Anchors</button>
-          </div>
+				<div class="test-area">
+					<p>Navigation test:</p>
+					<div class="button-group">
+						<button class="btn" @click="$router.push('/')">Home</button>
+						<button class="btn" @click="$router.push('/params')">Route Params</button>
+						<button class="btn" @click="$router.push('/anchors')">Anchors</button>
+					</div>
           
-          <div v-if="guardEnabled" class="warning-box">
-            <strong>Navigation is currently blocked</strong>
-            <p>Disable the guard to allow route change.</p>
-          </div>
-        </div>
-      </div>
+					<div v-if="guardEnabled" class="warning-box">
+						<strong>Navigation is currently blocked</strong>
+						<p>Disable the guard to allow route change.</p>
+					</div>
+				</div>
+			</div>
 
-      <div class="section">
-        <button @click="$router.push('/')" class="btn">← Back to Home</button>
-      </div>
-    </div>
-  </div>
+			<div class="section">
+				<button class="btn" @click="$router.push('/')">← Back to Home</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: 'RouteGuards',
-  data() {
-    return {
-      guardEnabled: false
-    }
-  },
-  methods: {
-    beforeRouteLeave(next) {
-      if (this.guardEnabled) {
-        // Block navigation
-        console.log('Navigation blocked by route guard!')
-        return
-      }
+	name: 'RouteGuards',
+	data() {
+		return {
+			guardEnabled: false
+		}
+	},
+	methods: {
+		beforeRouteLeave( next ) {
+			if ( this.guardEnabled ) {
+				// Block navigation
+				console.log( 'Navigation blocked by route guard!' )
+				return
+			}
       
-      // Allow navigation
-      next()
-    }
-  }
+			// Allow navigation
+			next()
+		}
+	}
 }
 </script>
 
