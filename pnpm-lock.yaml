@@ -22,8 +22,8 @@ importers:
         specifier: ^5.5.0
         version: 5.5.0(eslint@9.39.1(jiti@2.4.2))
       '@vitejs/plugin-vue':
-        specifier: ^6.0.1
-        version: 6.0.1(vite@7.2.2(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1))(vue@3.5.22)
+        specifier: ^6.0.2
+        version: 6.0.2(vite@7.2.2(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1))(vue@3.5.22)
       '@vue/test-utils':
         specifier: ^2.4.6
         version: 2.4.6
@@ -77,8 +77,8 @@ importers:
         version: link:..
     devDependencies:
       '@vitejs/plugin-vue':
-        specifier: ^6.0.1
-        version: 6.0.1(vite@7.1.11(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1))(vue@3.5.22)
+        specifier: ^6.0.2
+        version: 6.0.2(vite@7.1.11(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1))(vue@3.5.22)
       vite:
         specifier: ^7.1.11
         version: 7.1.11(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1)
@@ -639,8 +639,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@rolldown/pluginutils@1.0.0-beta.29':
-    resolution: {integrity: sha512-NIJgOsMjbxAXvoGq/X0gD7VPMQ8j9g0BiDaNjVNVjvl+iKXxL3Jre0v31RmBYeLEmkbj2s02v8vFTbUXi5XS2Q==}
+  '@rolldown/pluginutils@1.0.0-beta.50':
+    resolution: {integrity: sha512-5e76wQiQVeL1ICOZVUg4LSOVYg9jyhGCin+icYozhsUzM+fHE7kddi1bdiE0jwVqTfkjba3jUFbEkoC9WkdvyA==}
 
   '@rollup/rollup-android-arm-eabi@4.44.2':
     resolution: {integrity: sha512-g0dF8P1e2QYPOj1gu7s/3LVP6kze9A7m6x0BZ9iTdXK8N5c2V7cpBKHV3/9A4Zd8xxavdhK0t4PnqjkqVmUc9Q==}
@@ -842,8 +842,8 @@ packages:
       vite: ^5.0.0 || ^6.0.0
       vue: ^3.2.25
 
-  '@vitejs/plugin-vue@6.0.1':
-    resolution: {integrity: sha512-+MaE752hU0wfPFJEUAIxqw18+20euHHdxVtMvbFcOEpjEyfqXH/5DCoTHiVJ0J29EhTJdoTkjEv5YBKU9dnoTw==}
+  '@vitejs/plugin-vue@6.0.2':
+    resolution: {integrity: sha512-iHmwV3QcVGGvSC1BG5bZ4z6iwa1SOpAPWmnjOErd4Ske+lZua5K9TtAVdx0gMBClJ28DViCbSmZitjWZsWO3LA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0
@@ -2554,7 +2554,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@rolldown/pluginutils@1.0.0-beta.29': {}
+  '@rolldown/pluginutils@1.0.0-beta.50': {}
 
   '@rollup/rollup-android-arm-eabi@4.44.2':
     optional: true
@@ -2729,15 +2729,15 @@ snapshots:
       vite: 5.4.19(@types/node@22.13.10)(terser@5.44.1)
       vue: 3.5.19
 
-  '@vitejs/plugin-vue@6.0.1(vite@7.1.11(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1))(vue@3.5.22)':
+  '@vitejs/plugin-vue@6.0.2(vite@7.1.11(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1))(vue@3.5.22)':
     dependencies:
-      '@rolldown/pluginutils': 1.0.0-beta.29
+      '@rolldown/pluginutils': 1.0.0-beta.50
       vite: 7.1.11(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1)
       vue: 3.5.22
 
-  '@vitejs/plugin-vue@6.0.1(vite@7.2.2(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1))(vue@3.5.22)':
+  '@vitejs/plugin-vue@6.0.2(vite@7.2.2(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1))(vue@3.5.22)':
     dependencies:
-      '@rolldown/pluginutils': 1.0.0-beta.29
+      '@rolldown/pluginutils': 1.0.0-beta.50
       vite: 7.2.2(@types/node@22.13.10)(jiti@2.4.2)(terser@5.44.1)
       vue: 3.5.22
 
