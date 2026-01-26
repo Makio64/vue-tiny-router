@@ -65,7 +65,7 @@
     "gzip-size": "^7.0.0",
     "jsdom": "^27.1.0",
     "size-limit": "^11.2.0",
-    "terser": "^5.44.1",
+    "terser": "^5.46.0",
     "vite": "^7.2.2",
     "vitest": "^4.0.8",
     "vue-eslint-parser": "^10.2.0"
