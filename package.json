@@ -1,6 +1,6 @@
 {
   "name": "vue-tiny-router",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "type": "module",
   "description": "A lightweight Vue 3 router (~1.33 kB Brotli) with route params, guards, lazy loading, and redirects",
   "main": "src/index.js",
