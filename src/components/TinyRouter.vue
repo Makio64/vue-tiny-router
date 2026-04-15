@@ -7,11 +7,12 @@ import { ref } from 'vue'
 
 let TinyRouterInstance
 let isNavigatingProgrammatically = false
+const regexCache = {}
 
 export const defaultRoute = ref( null )
 export const initialRoute = ref( window?.location.pathname )
 export const initialQuery = ref( window?.location.search )
-export const routeState = ref( { route: ( ( initialRoute.value || '' ) + ( initialQuery.value || '' ) ), params: {} } )
+export const routeState = ref( { route: ( ( initialRoute.value || '' ) + ( initialQuery.value || '' ) ), params: {}, meta: {} } )
 
 const findMatch = ( path, routes, redirects ) => {
 	const pathOnly = path.split( '#' )[0].split( '?' )[0]
@@ -24,22 +25,26 @@ const findMatch = ( path, routes, redirects ) => {
 
 	// Check parameterized and wildcard routes
 	for ( const route of routes ) {
-		const paramNames = []
-		let pattern = route.path
-		// Support wildcard catch-all (e.g., /* or /user/*)
-		if ( pattern.includes( '*' ) ) pattern = pattern.replace( /\*+/g, '.*' )
-		pattern = pattern.replace( /:([^/]+)/g, ( _, name ) => {
-			paramNames.push( name )
-			return '([^/]*)'
-		} )
+		if ( !regexCache[route.path] ) {
+			const paramNames = []
+			let pattern = route.path
+			// Support wildcard catch-all (e.g., /* or /user/*)
+			if ( pattern.includes( '*' ) ) pattern = pattern.replace( /\*+/g, '.*' )
+			pattern = pattern.replace( /:([^/]+)/g, ( _, name ) => {
+				paramNames.push( name )
+				return '([^/]*)'
+			} )
 
-		// Make last segment optional if it has a param
-		if ( /:[^/]+$/.test( route.path ) ) {
-			const i = pattern.lastIndexOf( '/([^/]*)' )
-			if ( i > 0 ) pattern = pattern.slice( 0, i ) + '(?:' + pattern.slice( i ) + ')?'
+			// Make last segment optional if it has a param
+			if ( /:[^/]+$/.test( route.path ) ) {
+				const i = pattern.lastIndexOf( '/([^/]*)' )
+				if ( i > 0 ) pattern = pattern.slice( 0, i ) + '(?:' + pattern.slice( i ) + ')?'
+			}
+			regexCache[route.path] = { regex: new RegExp( '^' + pattern + '/?$' ), paramNames }
 		}
 
-		const match = resolved.match( new RegExp( '^' + pattern + '/?$' ) )
+		const { regex, paramNames } = regexCache[route.path]
+		const match = resolved.match( regex )
 		if ( match ) {
 			const params = paramNames.reduce( ( acc, name, i ) => {
 				acc[name] = match[i + 1] || ''
@@ -66,6 +71,7 @@ const TinyRouter = {
 			const { route, params, resolved } = findMatch( this.route, this.routes, this.redirects )
 			this.routeParams = params
 			routeState.value.params = params
+			routeState.value.meta = route?.meta || {}
 			if ( !route ) console.warn( `Route "${resolved}" not found` )
 			return route ? route.component : this.routes[0].component
 		}
@@ -80,11 +86,11 @@ const TinyRouter = {
 		if ( this.__onNavigate ) navigation?.removeEventListener( 'navigate', this.__onNavigate )
 	},
 	methods: {
-		proceed( path, isPop = true ) {
-			if ( !isPop ) {
+		proceed( path, _isPop = true, _isReplace = false ) {
+			if ( !_isPop ) {
 				isNavigatingProgrammatically = true
 				setTimeout( () => { isNavigatingProgrammatically = false }, 0 )
-				if ( !this.memoryMode ) history.pushState( null, '', path )
+				if ( !this.memoryMode ) _isReplace ? history.replaceState( null, '', path ) : history.pushState( null, '', path )
 			}
 			this.route = path
 			routeState.value.route = path
@@ -104,22 +110,23 @@ const TinyRouter = {
 			} )
 		}
 		,
-
 		/**
-     * Navigate to a new route
-     * @param {string} path - The path to navigate to (e.g., '/user/123')
-     * @param {boolean} isPop - Internal flag for history navigation
-     */
-		push( path, isPop = false ) {
+		 * Navigate to a new route.
+		 * @param {string} path - Target path (e.g. '/user/123').
+		 * @param {boolean} [_isPop=false] - Internal: true when called from popstate/navigate handlers.
+		 * @param {boolean} [_isReplace=false] - Internal: true to use history.replaceState; prefer calling replace().
+		 */
+		push( path, _isPop = false, _isReplace = false ) {
 			path = path.replace( /\/{2,}/g, '/' )
 			if ( path === this.route ) return
 			const leaveGuard = this.$refs.activeView?.beforeRouteLeave
-			leaveGuard ? leaveGuard( () => this.proceed( path, isPop ) ) : this.proceed( path, isPop )
-		}
+			leaveGuard ? leaveGuard( () => this.proceed( path, _isPop, _isReplace ) ) : this.proceed( path, _isPop, _isReplace )
+		},
+		/** Navigate without pushing a history entry (history.replaceState). */
+		replace( path ) { this.push( path, false, true ) }
 	}
 }
 
-// Handle external links
 if ( typeof navigation !== 'undefined' ) {
 	navigation?.addEventListener( "navigate", ( event ) => {
 		const { pathname, search, hash, origin } = new URL( event.destination.url )
@@ -140,38 +147,44 @@ export default TinyRouter
 
 export { TinyRouter }
 
+const navActions = {
+	push( path ) { TinyRouterInstance?.push( path ) },
+	replace( path ) { TinyRouterInstance?.replace( path ) },
+	back() { history.back() },
+	forward() { history.forward() },
+	go( n ) { history.go( n ) }
+}
+
 /**
- * Vue plugin installer - adds TinyRouter component and $router global property
+ * Vue plugin installer — registers the <TinyRouter> component and the $router
+ * global. $router reads through TinyRouterInstance to preserve the original
+ * pre-mount semantics (route/params/component are undefined until mounted).
  * @usage app.use(TinyRouterInstall)
  */
 export const TinyRouterInstall = {
 	install( app ) {
 		app.component( 'TinyRouter', TinyRouter )
 		app.config.globalProperties.$router = {
-			push( path ) { TinyRouterInstance?.push( path ) },
+			...navActions,
 			get route() { return TinyRouterInstance?.route },
 			get component() { return TinyRouterInstance?.currentComponent },
 			get params() { return TinyRouterInstance?.routeParams },
-			// this is native history API so doesnt need to be wrapped, dont work in memorymode
-			// go( n ) { history.go( n ) },
-			// forward() { history.forward() },
-			// back() { history.back() }
+			get meta() { return routeState.value.meta }
 		}
 	}
 }
 
-//---- Composition API
 export const useRouter = () => ( {
-	push( path ) {
-		TinyRouterInstance?.push( path )
-	},
-	get route() { return routeState.value.route},
-	get params() { return routeState.value.params},
-	get component() { return TinyRouterInstance?.currentComponent}
+	...navActions,
+	get route() { return routeState.value.route },
+	get params() { return routeState.value.params },
+	get meta() { return routeState.value.meta },
+	get component() { return TinyRouterInstance?.currentComponent }
 } )
 
 export const useRoute = () => ( {
 	get route() { return routeState.value.route },
-	get params() { return routeState.value.params }
+	get params() { return routeState.value.params },
+	get meta() { return routeState.value.meta }
 } )
 </script>

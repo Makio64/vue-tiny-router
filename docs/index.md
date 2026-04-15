@@ -14,7 +14,7 @@ hero:
       link: https://github.com/Makio64/vue-tiny-router
     - theme: alt
       text: Live Example
-      link: /demo
+      link: https://stackblitz.com/github/Makio64/vue-tiny-router/tree/main/example
 
 features:
   - icon: "•"
@@ -98,7 +98,7 @@ this.$router.push('/about')
 
 | Router | Bundle Size (Brotli) | Features |
 |--------|----------------------|----------|
-| vue-tiny-router | **1.02kb** | Route params, guards, lazy loading, redirects, anchor links, memory mode |
+| vue-tiny-router | **~1.33 kB** | Route params, guards, lazy loading, redirects, anchor links, memory mode |
 | vue-router | ~34kb | Full-featured router with extensive API |
 
 ### Perfect For

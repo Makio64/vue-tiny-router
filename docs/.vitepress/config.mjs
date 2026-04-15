@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig( {
 	title: 'Vue Tiny Router',
-	description: 'A lightweight Vue 3 router - Only 1kb gzipped',
+	description: 'A lightweight Vue 3 router (~1.33 kB Brotli) with route params, guards, lazy loading, and redirects',
 	base: '/',
   
 	head: [
@@ -11,7 +11,7 @@ export default defineConfig( {
 		['meta', { name: 'og:type', content: 'website' }],
 		['meta', { name: 'og:locale', content: 'en' }],
 		['meta', { name: 'og:title', content: 'Vue Tiny Router | Lightweight Vue 3 Router' }],
-		['meta', { name: 'og:description', content: 'A lightweight Vue 3 router with all essential features in just 1kb gzipped' }],
+		['meta', { name: 'og:description', content: 'A lightweight Vue 3 router (~1.33 kB Brotli) with route params, guards, lazy loading, and redirects' }],
 		['meta', { name: 'og:site_name', content: 'Vue Tiny Router' }],
 	],
 
@@ -28,7 +28,7 @@ export default defineConfig( {
 				items: [
 					{ text: 'GitHub', link: 'https://github.com/Makio64/vue-tiny-router' },
 					{ text: 'NPM', link: 'https://www.npmjs.com/package/vue-tiny-router' },
-					{ text: 'Live Example', link: '/demo' }
+					{ text: 'Live Example', link: 'https://stackblitz.com/github/Makio64/vue-tiny-router/tree/main/example' }
 				]
 			}
 		],
@@ -58,8 +58,15 @@ export default defineConfig( {
 						{ text: 'Memory Mode', link: '/guide/memory-mode' },
 						{ text: 'Anchor Links', link: '/guide/anchor-links' },
 						{ text: 'Lazy Loading', link: '/guide/lazy-loading' },
-						{ text: 'Multiple Routers', link: '/guide/multiple-routers' }
+						{ text: 'Query Strings', link: '/guide/query-strings' },
+						{ text: 'Multiple Routers', link: '/guide/multiple-routers' },
+						{ text: 'TypeScript', link: '/guide/typescript' },
+						{ text: 'Testing', link: '/guide/testing' }
 					]
+				},
+				{
+					text: 'Resources',
+					items: [{ text: 'Comparison', link: '/guide/comparison' }]
 				}
 			],
 			'/api/': [

@@ -1,6 +1,8 @@
 # vue-tiny-router
 
 [![CI](https://github.com/Makio64/vue-tiny-router/actions/workflows/ci.yml/badge.svg)](https://github.com/Makio64/vue-tiny-router/actions/workflows/ci.yml)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/vue-tiny-router)](https://bundlephobia.com/package/vue-tiny-router)
+[![license](https://img.shields.io/npm/l/vue-tiny-router.svg)](LICENSE)
 
 A lightweight Vue 3 router. **~1.33 kB Brotli** with all the features you need.
 
@@ -102,19 +104,28 @@ That's it! 🎉
 ## API Reference
 
 ### Router Methods
-- `$router.push(path)` - Navigate to a route
+- `$router.push(path)` - Navigate to a route (adds history entry)
+- `$router.replace(path)` - Navigate without adding history entry
+- `$router.back()` - Go back in history
+- `$router.forward()` - Go forward in history
+- `$router.go(n)` - Go to a specific history entry
 - `$router.route` - Current route path
 - `$router.params` - Route parameters object
+- `$router.meta` - Current route metadata
 
 ### Composables
 - `useRouter()` - Returns an object with:
-  - `push(path)` - Navigate programmatically
+  - `push(path)` - Navigate programmatically (adds history entry)
+  - `replace(path)` - Navigate without adding history entry
+  - `back()` / `forward()` / `go(n)` - History navigation
   - `route` - Reactive current path string
   - `params` - Reactive params object
+  - `meta` - Reactive route metadata
   - `component` - Current matched component (non-reactive reference)
 - `useRoute()` - Returns an object with:
   - `route` - Reactive current path string
   - `params` - Reactive params object
+  - `meta` - Reactive route metadata
 
 ### Component Props
 ```js
@@ -134,6 +145,19 @@ Access dynamic route segments:
 // Route: /user/:id
 // URL: /user/123
 this.$router.params.id // "123"
+```
+
+### Route Meta
+Attach metadata to routes for page titles, auth checks, etc:
+```js
+const routes = [
+  { path: '/', component: Home, meta: { title: 'Home' } },
+  { path: '/admin', component: Admin, meta: { requiresAuth: true } }
+]
+
+// Access in components
+const route = useRoute()
+document.title = route.meta.title
 ```
 
 ### Route Guards
@@ -190,9 +214,12 @@ Most common patterns work the same:
 | vue-router | vue-tiny-router |
 |------------|-----------------|
 | `$router.push()` | `$router.push()` ✅ |
+| `$router.replace()` | `$router.replace()` ✅ |
+| `$router.back()` | `$router.back()` ✅ |
+| `$router.go(n)` | `$router.go(n)` ✅ |
 | `$route.params` | `$router.params` ✅ |
+| `$route.meta` | `$router.meta` ✅ |
 | `beforeRouteLeave` | `beforeRouteLeave` ✅ |
-| Route guards | Route guards ✅ |
 | Lazy loading | Lazy loading ✅ |
 
 [See full migration guide →](docs/migration/from-vue-router.md)
@@ -230,7 +257,7 @@ This library is intentionally tiny and focuses on the 80% use cases:
 - No named routes or route names
 - No history mode configuration (uses browser History API when not in memory mode)
 - No automatic query parsing (query string is appended as-is; parse it in your component if needed)
-- No route metadata or per-route guards (supports component-level `beforeRouteLeave` only)
+- No per-route guards (supports component-level `beforeRouteLeave` only)
 - No SSR integration
 
 If you need these features, consider using `vue-router`.

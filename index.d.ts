@@ -3,6 +3,7 @@ import type { App, Component } from 'vue'
 export interface Route {
   path: string
   component: Component
+  meta?: Record<string, any>
 }
 
 export interface RedirectsMap {
@@ -18,14 +19,20 @@ export interface TinyRouterProps {
 
 export interface RouterAPI {
   push(path: string): void
+  replace(path: string): void
+  back(): void
+  forward(): void
+  go(n: number): void
   readonly route: string | undefined
   readonly component: Component | undefined
   readonly params: Record<string, string>
+  readonly meta: Record<string, any>
 }
 
 export interface RouteState {
   route: string
   params: Record<string, string>
+  meta: Record<string, any>
 }
 
 export const defaultRoute: { value: string | null }
