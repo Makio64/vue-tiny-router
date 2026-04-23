@@ -319,7 +319,7 @@ code {
 
 ## Next Steps
 
-- [Route Parameters](/examples/route-parameters) - Handle dynamic segments
-- [Route Guards](/examples/route-guards) - Control navigation flow
-- [Memory Mode](/examples/memory-mode) - Routing without URL changes
-- [Full App Example](/examples/full-app) - Complete application demo 
+- [Route Parameters](/guide/route-parameters) - Handle dynamic segments
+- [Route Guards](/guide/route-guards) - Control navigation flow
+- [Memory Mode](/guide/memory-mode) - Routing without URL changes
+- [Anchor Links](/guide/anchor-links) - Smooth scrolling 

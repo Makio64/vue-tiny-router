@@ -22,8 +22,7 @@ export default defineConfig( {
 			{ text: 'Guide', link: '/guide/getting-started' },
 			{ text: 'API', link: '/api/router' },
 			{ text: 'Examples', link: '/examples/basic' },
-			{ text: 'Migration', link: '/migration/from-vue-router' },
-			{ 
+			{
 				text: 'Links', 
 				items: [
 					{ text: 'GitHub', link: 'https://github.com/Makio64/vue-tiny-router' },
@@ -73,10 +72,7 @@ export default defineConfig( {
 				{
 					text: 'API Reference',
 					items: [
-						{ text: 'Router', link: '/api/router' },
-						{ text: 'Component Props', link: '/api/component-props' },
-						{ text: 'Global Properties', link: '/api/global-properties' },
-						{ text: 'Exports', link: '/api/exports' }
+						{ text: 'Router', link: '/api/router' }
 					]
 				}
 			],
@@ -84,12 +80,7 @@ export default defineConfig( {
 				{
 					text: 'Examples',
 					items: [
-						{ text: 'Basic Usage', link: '/examples/basic' },
-						{ text: 'Route Parameters', link: '/examples/route-parameters' },
-						{ text: 'Route Guards', link: '/examples/route-guards' },
-						{ text: 'Memory Mode', link: '/examples/memory-mode' },
-						{ text: 'Anchor Links', link: '/examples/anchor-links' },
-						{ text: 'Full App Example', link: '/examples/full-app' }
+						{ text: 'Basic Usage', link: '/examples/basic' }
 					]
 				}
 			]

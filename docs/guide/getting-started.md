@@ -162,7 +162,7 @@ Now that you have a basic setup, you can explore more advanced features:
 
 ## Example Project
 
-Want to see all features in action? Check out our [full example application](/examples/full-app) that demonstrates every feature of Vue Tiny Router.
+Want to see all features in action? Check out our [full example application](https://stackblitz.com/github/Makio64/vue-tiny-router/tree/main/example) that demonstrates every feature of Vue Tiny Router.
 
 ## Troubleshooting
 
