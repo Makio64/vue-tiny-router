@@ -71,17 +71,13 @@ export default defineConfig( {
 			'/api/': [
 				{
 					text: 'API Reference',
-					items: [
-						{ text: 'Router', link: '/api/router' }
-					]
+					items: [{ text: 'Router', link: '/api/router' }]
 				}
 			],
 			'/examples/': [
 				{
 					text: 'Examples',
-					items: [
-						{ text: 'Basic Usage', link: '/examples/basic' }
-					]
+					items: [{ text: 'Basic Usage', link: '/examples/basic' }]
 				}
 			]
 		},
