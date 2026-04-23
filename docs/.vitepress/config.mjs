@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig( {
 	title: 'Vue Tiny Router',
 	description: 'A lightweight Vue 3 router (~1.33 kB Brotli) with route params, guards, lazy loading, and redirects',
-	base: '/',
+	base: '/vue-tiny-router/',
   
 	head: [
 		['link', { rel: 'icon', href: '/favicon.ico' }],
