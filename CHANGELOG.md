@@ -2,6 +2,23 @@
 
 All notable changes to `vue-tiny-router` are documented here. Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [semver](https://semver.org/).
 
+## [1.8.1] — 2026-04-23
+
+Hotfix for subpath deployments (apps served from e.g. `example.com/jsmap/`). Library remains at **1.47 kB brotli** (under the 1.5 kB budget).
+
+### Fixed
+- The Navigation API listener added in 1.8.0 caused full page reloads on every internal link when the app was served from a subpath. `findMatch` compared the raw pathname (`/jsmap/about`) against app-relative route paths (`/about`) and never matched, so the listener bailed and the browser handled the click. `popstate` and `initialRoute` had the same issue.
+
+### Added
+- **Base path support via auto-detection** — the router now reads Vite's `import.meta.env.BASE_URL` at build time, so Vite apps with `base: '/jsmap/'` in `vite.config.js` work with zero config. Routes stay app-relative; the router strips the base prefix on match and re-adds it on history writes.
+- **`basePath` ref export** — for non-Vite bundlers. Set `basePath.value = '/jsmap/'` before mount.
+
+### Types
+- [index.d.ts](index.d.ts): added `basePath` export.
+
+### Migration
+None required — if you already use Vite with a `base` config, this just works. If you're not using Vite and deploy to a subpath, set `basePath.value` before mount.
+
 ## [1.8.0] — 2026-04-15
 
 Fully backward-compatible with 1.7.x. Adds navigation helpers, route `meta`, and a match-regex cache.

@@ -38,6 +38,7 @@ export interface RouteState {
 export const defaultRoute: { value: string | null }
 export const initialRoute: { value: string | undefined }
 export const initialQuery: { value: string | undefined }
+export const basePath: { value: string }
 
 export const TinyRouterInstall: {
   install(app: App): void

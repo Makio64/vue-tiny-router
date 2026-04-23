@@ -41,6 +41,17 @@ const redirects = {
 <TinyRouter :routes="routes" :memoryMode="true" />
 ```
 
+### Base path (subpath deployments)
+
+Auto-detected from Vite's `import.meta.env.BASE_URL`. Just set `base: '/jsmap/'` in `vite.config.js` and it works — routes stay app-relative, the router strips the prefix on match and re-adds it on history writes.
+
+For non-Vite bundlers, override the exported `basePath` ref before mount:
+
+```js
+import { basePath } from 'vue-tiny-router'
+basePath.value = '/jsmap/'
+```
+
 ### Usage
 
 ```vue

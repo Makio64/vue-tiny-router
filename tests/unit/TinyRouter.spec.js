@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { nextTick, defineComponent, ref, markRaw } from 'vue'
-import TinyRouter, { defaultRoute, initialRoute, initialQuery } from '../../src/components/TinyRouter.vue'
+import TinyRouter, { defaultRoute, initialRoute, initialQuery, basePath } from '../../src/components/TinyRouter.vue'
 
 // Mock components for testing
 const Home = markRaw(defineComponent({
@@ -53,6 +53,7 @@ describe('TinyRouter', () => {
     defaultRoute.value = null
     initialRoute.value = '/'
     initialQuery.value = ''
+    basePath.value = '/'
     
     // Mock location and history methods
     delete window.location
@@ -784,28 +785,196 @@ describe('TinyRouter', () => {
           { path: '/', component: Home },
           { path: '/user/:id', component: User }
       ]
-      
+
       const wrapper = mount(TinyRouterFresh, { props: { routes } })
       vi.runAllTimers()
       await nextTick()
 
       const navigateListener = navigationEventListeners.get('navigate')
       expect(navigateListener).toBeDefined()
-      
+
       const event = {
           destination: { url: new URL('http://localhost/user/abc') },
           preventDefault: vi.fn()
       }
-      
+
       navigateListener(event)
-      
+
       expect(event.preventDefault).toHaveBeenCalled()
 
       await nextTick()
-      
+
       expect(wrapper.findComponent(User).exists()).toBe(true)
       expect(wrapper.vm.route).toBe('/user/abc')
       expect(wrapper.vm.routeParams).toEqual({ id: 'abc' })
+    })
+  })
+
+  describe('Base path (Vite base option)', () => {
+    it('strips base from initial pathname when matching routes', async () => {
+      basePath.value = '/jsmap/'
+      initialRoute.value = '/jsmap/'
+
+      const routes = [
+        { path: '/', component: Home, meta: { title: 'Home' } },
+        { path: '/about', component: About }
+      ]
+
+      const wrapper = mount(TinyRouter, { props: { routes } })
+      await nextTick()
+
+      expect(wrapper.findComponent(Home).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/')
+      expect(wrapper.vm.routeParams).toEqual({})
+      expect(warnSpy).not.toHaveBeenCalled()
+    })
+
+    it('matches nested routes under a base', async () => {
+      basePath.value = '/jsmap'
+      initialRoute.value = '/jsmap/about'
+
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/about', component: About }
+      ]
+
+      const wrapper = mount(TinyRouter, { props: { routes } })
+      await nextTick()
+
+      expect(wrapper.findComponent(About).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/about')
+    })
+
+    it('resolves redirects against app-relative path, not base-prefixed path', async () => {
+      basePath.value = '/jsmap/'
+      initialRoute.value = '/jsmap/three'
+
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/about', component: About }
+      ]
+
+      const wrapper = mount(TinyRouter, {
+        props: { routes, redirects: { '/three': '/' } }
+      })
+      await nextTick()
+
+      expect(wrapper.findComponent(Home).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/three')
+    })
+
+    it('prepends base when writing to history on push', async () => {
+      basePath.value = '/jsmap/'
+
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/about', component: About }
+      ]
+
+      const wrapper = mount(TinyRouter, { props: { routes } })
+      await nextTick()
+      window.history.pushState.mockClear()
+
+      await wrapper.vm.push('/about')
+      await nextTick()
+
+      expect(wrapper.findComponent(About).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/about')
+      expect(window.history.pushState).toHaveBeenCalledWith(null, '', '/jsmap/about')
+    })
+
+    it('accepts paths that already include the base prefix', async () => {
+      basePath.value = '/jsmap/'
+
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/about', component: About }
+      ]
+
+      const wrapper = mount(TinyRouter, { props: { routes } })
+      await nextTick()
+
+      await wrapper.vm.push('/jsmap/about')
+      await nextTick()
+
+      expect(wrapper.findComponent(About).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/about')
+    })
+  })
+
+  describe('Navigation Interception with base', () => {
+    let TinyRouterFresh
+    let mockNavigation
+    let navigationEventListeners
+
+    beforeEach(async () => {
+      vi.useFakeTimers()
+      navigationEventListeners = new Map()
+      mockNavigation = {
+        addEventListener: vi.fn((event, listener) => {
+          navigationEventListeners.set(event, listener)
+        }),
+      }
+      vi.stubGlobal('navigation', mockNavigation)
+
+      vi.resetModules()
+      const routerModule = await import('../../src/components/TinyRouter.vue')
+      TinyRouterFresh = routerModule.default
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('intercepts in-base link clicks and strips base', async () => {
+      const { basePath: freshBasePath } = await import('../../src/components/TinyRouter.vue')
+      freshBasePath.value = '/jsmap/'
+
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/about', component: About }
+      ]
+
+      const wrapper = mount(TinyRouterFresh, { props: { routes } })
+      vi.runAllTimers()
+      await nextTick()
+
+      const navigateListener = navigationEventListeners.get('navigate')
+      const event = {
+        destination: { url: new URL('http://localhost/jsmap/about') },
+        preventDefault: vi.fn()
+      }
+
+      navigateListener(event)
+      expect(event.preventDefault).toHaveBeenCalled()
+
+      await nextTick()
+      expect(wrapper.findComponent(About).exists()).toBe(true)
+      expect(wrapper.vm.route).toBe('/about')
+    })
+
+    it('does not intercept links outside the base', async () => {
+      const { basePath: freshBasePath } = await import('../../src/components/TinyRouter.vue')
+      freshBasePath.value = '/jsmap/'
+
+      const routes = [
+        { path: '/', component: Home },
+        { path: '/*', component: NotFound }
+      ]
+
+      const wrapper = mount(TinyRouterFresh, { props: { routes } })
+      vi.runAllTimers()
+      await nextTick()
+
+      const navigateListener = navigationEventListeners.get('navigate')
+      const event = {
+        destination: { url: new URL('http://localhost/other/page') },
+        preventDefault: vi.fn()
+      }
+
+      navigateListener(event)
+      expect(event.preventDefault).not.toHaveBeenCalled()
+      expect(wrapper.vm.route).toBe('/')
     })
   })
 })

@@ -133,8 +133,23 @@ That's it! 🎉
   :routes="routes"           // Required: Array of route objects
   :redirects="redirects"     // Optional: Redirect mappings
   :memoryMode="false"        // Optional: In-memory routing
-  :scrollSmooth="false"        // Optional: smooth scrolling on navigation
+  :scrollSmooth="false"      // Optional: smooth scrolling on navigation
 />
+```
+
+### Base path (subpath deployments)
+If your app is served from a subpath (e.g. `example.com/jsmap/`), `vue-tiny-router` automatically reads Vite's `import.meta.env.BASE_URL` — no config needed. Just set `base` in `vite.config.js`:
+
+```js
+// vite.config.js
+export default { base: '/jsmap/' }
+```
+
+Routes stay app-relative (`/`, `/about`, `/user/:id`) — the router strips the base prefix when matching and re-adds it when writing to history. For non-Vite bundlers, override the `basePath` ref before mount:
+
+```js
+import { basePath } from 'vue-tiny-router'
+basePath.value = '/jsmap/'
 ```
 
 ## Advanced Features

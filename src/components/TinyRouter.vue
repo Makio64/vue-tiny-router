@@ -9,6 +9,11 @@ let TinyRouterInstance
 let isNavigatingProgrammatically = false
 const regexCache = {}
 
+// base path for subpath deployments: '' (root) or '/foo' (no trailing slash). Vite inlines BASE_URL in consumer builds; override via basePath.value before mount for other bundlers.
+export const basePath = ref( import.meta.env?.BASE_URL || '/' )
+let base = ''
+const stripBase = p => p === base ? '/' : p.startsWith( base + '/' ) ? p.slice( base.length ) : p
+
 export const defaultRoute = ref( null )
 export const initialRoute = ref( window?.location.pathname )
 export const initialQuery = ref( window?.location.search )
@@ -78,19 +83,16 @@ const TinyRouter = {
 	},
 	created() {
 		TinyRouterInstance = this
+		base = basePath.value.replace( /\/$/, '' ) // '/' → '', '/jsmap/' or '/jsmap' → '/jsmap'
 		if ( !this.memoryMode ) window?.addEventListener( 'popstate', () => this.push( window?.location.pathname, true ) )
 		this.push( ( defaultRoute.value || initialRoute.value ) + initialQuery.value )
-	},
-	unmounted() {
-		if ( this.__onPop ) window?.removeEventListener( 'popstate', this.__onPop )
-		if ( this.__onNavigate ) navigation?.removeEventListener( 'navigate', this.__onNavigate )
 	},
 	methods: {
 		proceed( path, _isPop = true, _isReplace = false ) {
 			if ( !_isPop ) {
 				isNavigatingProgrammatically = true
 				setTimeout( () => { isNavigatingProgrammatically = false }, 0 )
-				if ( !this.memoryMode ) _isReplace ? history.replaceState( null, '', path ) : history.pushState( null, '', path )
+				if ( !this.memoryMode ) history[_isReplace ? 'replaceState' : 'pushState']( null, '', base + path )
 			}
 			this.route = path
 			routeState.value.route = path
@@ -117,7 +119,7 @@ const TinyRouter = {
 		 * @param {boolean} [_isReplace=false] - Internal: true to use history.replaceState; prefer calling replace().
 		 */
 		push( path, _isPop = false, _isReplace = false ) {
-			path = path.replace( /\/{2,}/g, '/' )
+			path = stripBase( path.replace( /\/{2,}/g, '/' ) )
 			if ( path === this.route ) return
 			const leaveGuard = this.$refs.activeView?.beforeRouteLeave
 			leaveGuard ? leaveGuard( () => this.proceed( path, _isPop, _isReplace ) ) : this.proceed( path, _isPop, _isReplace )
@@ -127,21 +129,19 @@ const TinyRouter = {
 	}
 }
 
-if ( typeof navigation !== 'undefined' ) {
-	navigation?.addEventListener( "navigate", ( event ) => {
-		const { pathname, search, hash, origin } = new URL( event.destination.url )
-		if ( isNavigatingProgrammatically || origin !== window.location.origin || !TinyRouterInstance ) return
+globalThis.navigation?.addEventListener( "navigate", event => {
+	const { pathname, search, hash, origin } = new URL( event.destination.url )
+	if ( isNavigatingProgrammatically || origin !== window.location.origin || !TinyRouterInstance ) return
 
-		const { route } = findMatch( pathname, TinyRouterInstance.routes, TinyRouterInstance.redirects )
+	const stripped = stripBase( pathname )
+	if ( base && stripped === pathname ) return // link outside base → let the browser handle it
 
-		if ( !route ) return
+	const { route } = findMatch( stripped, TinyRouterInstance.routes, TinyRouterInstance.redirects )
+	if ( !route ) return
 
-		event.preventDefault()
-		let path = pathname + search + hash
-		path = path.replace( /\/{2,}/g, '/' )
-		TinyRouterInstance.push( path )
-	} )
-}
+	event.preventDefault()
+	TinyRouterInstance.push( ( stripped + search + hash ).replace( /\/{2,}/g, '/' ) )
+} )
 
 export default TinyRouter
 
