@@ -92,7 +92,8 @@
     "overrides": {
       "minimatch@^9.0.0": "^9.0.7",
       "vite@^8.0.0": "^8.1.6",
-      "@vue/server-renderer": "^3.5.42"
+      "@vue/server-renderer": "^3.5.42",
+      "vitepress>vite": "^6.4.5"
     }
   }
 }
