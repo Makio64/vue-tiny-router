@@ -76,7 +76,7 @@
     "jsdom": "^29.0.2",
     "size-limit": "^12.1.0",
     "terser": "^5.46.1",
-    "vite": "^8.0.8",
+    "vite": "^8.3.5",
     "vitest": "^4.1.4",
     "vue-eslint-parser": "^10.4.0"
   },
@@ -87,5 +87,12 @@
       "limit": "1.5 KB",
       "brotli": true
     }
-  ]
+  ],
+  "pnpm": {
+    "overrides": {
+      "minimatch@^9.0.0": "^9.0.7",
+      "vite@^8.0.0": "^8.1.6",
+      "@vue/server-renderer": "^3.5.42"
+    }
+  }
 }
